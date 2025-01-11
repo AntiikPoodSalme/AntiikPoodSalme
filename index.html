@@ -50,6 +50,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 1rem;
+            word-wrap: break-word;
         }
         .product-card img {
             max-width: 100%;
@@ -63,62 +64,19 @@
             background: #333;
             color: white;
             margin-top: 2rem;
-        }
-        .admin-panel {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-        .admin-panel form {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             gap: 1rem;
         }
-        .admin-panel form input, .admin-panel form textarea, .admin-panel form button {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .admin-panel form button {
-            background: #333;
+        footer a {
             color: white;
+            text-decoration: none;
+        }
+        footer img {
+            width: 24px;
+            height: 24px;
             cursor: pointer;
-        }
-        .product-details {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            word-wrap: break-word;
-        }
-        .product-details img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 1rem;
-        }
-        .show-more {
-            color: blue;
-            cursor: pointer;
-        }
-        @media (max-width: 768px) {
-            .product-card {
-                width: 100%;
-                max-width: 300px;
-            }
-            .admin-panel {
-                width: 90%;
-            }
-            .product-details {
-                width: 90%;
-            }
         }
     </style>
 </head>
@@ -140,9 +98,15 @@
 
     <footer>
         <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
+        <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
+        </a>
+        <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/TikTok_logo.svg" alt="TikTok">
+        </a>
     </footer>
 
-    <section class="admin-panel" id="admin-panel">
+    <section class="admin-panel" id="admin-panel" style="display: none;">
         <h2>Admin Panel</h2>
         <div id="admin-product-list">
             <!-- Editable product list for admin -->
@@ -166,7 +130,7 @@
 
     <script>
         let products = JSON.parse(localStorage.getItem('products')) || [];
-        let isAdmin = false; // Flag to check if the user is an admin
+        let isAdmin = false;
 
         document.getElementById('sign-in').addEventListener('click', () => {
             const email = prompt('Enter your email:');
@@ -204,6 +168,10 @@
             adminForm.reset();
         });
 
+        function truncateText(text, maxLength) {
+            return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+        }
+
         function renderProducts() {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
@@ -213,13 +181,12 @@
                     const productCard = document.createElement('div');
                     productCard.classList.add('product-card');
 
-                    const shortDescription = product.description.length > 50 
-                        ? `${product.description.substring(0, 50)}...` 
-                        : product.description;
+                    const shortName = truncateText(product.name, 20);
+                    const shortDescription = truncateText(product.description, 50);
 
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
+                        <h2>${shortName}</h2>
                         <p>${shortDescription}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
@@ -262,10 +229,6 @@
                             height: auto;
                             margin-bottom: 1rem;
                         }
-                        .show-more {
-                            color: blue;
-                            cursor: pointer;
-                        }
                     </style>
                 </head>
                 <body>
@@ -288,58 +251,6 @@
                 localStorage.setItem('products', JSON.stringify(products));
                 renderProducts();
             }
-        }
-
-        function editProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-
-            const name = prompt('Edit Product Name:', product.name);
-            const description = prompt('Edit Product Description:', product.description);
-            const previewImage = prompt('Edit Preview Image URL:', product.previewImage);
-            const additionalImages = prompt('Edit Additional Image URLs (comma-separated):', product.additionalImages.join(','));
-
-            if (name && description && previewImage) {
-                product.name = name;
-                product.description = description;
-                product.previewImage = previewImage;
-                product.additionalImages = additionalImages.split(',').map(img => img.trim());
-                localStorage.setItem('products', JSON.stringify(products));
-                renderProducts();
-            }
-        }
-
-        document.getElementById('search-bar').addEventListener('input', (e) => {
-            const searchValue = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue));
-            renderFilteredProducts(filteredProducts);
-        });
-
-        function renderFilteredProducts(filteredProducts) {
-            const productList = document.querySelector('.product-list');
-            productList.innerHTML = '';
-
-            filteredProducts.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
-
-                    const shortDescription = product.description.length > 50 
-                        ? `${product.description.substring(0, 50)}...` 
-                        : product.description;
-
-                    productCard.innerHTML = `
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>${shortDescription}</p>
-                        <button onclick="viewProduct('${product.id}')">More Info</button>
-                        ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
-                        ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
-                    `;
-
-                    productList.appendChild(productCard);
-                }
-            });
         }
 
         renderProducts();
