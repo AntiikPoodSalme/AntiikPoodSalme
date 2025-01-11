@@ -222,6 +222,79 @@
             });
         }
 
+        function viewProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const detailsWindow = window.open('', '_blank');
+            detailsWindow.document.write(`
+                <html>
+                <head>
+                    <title>${product.name}</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 1rem;
+                            background-color: #f4f4f4;
+                        }
+                        .product-details {
+                            max-width: 800px;
+                            margin: auto;
+                            padding: 1rem;
+                            background: white;
+                            border: 1px solid #ddd;
+                            border-radius: 5px;
+                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                        }
+                        .product-details img {
+                            max-width: 100%;
+                            height: auto;
+                            margin-bottom: 1rem;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="product-details">
+                        <img src="${product.previewImage}" alt="${product.name}">
+                        <h1>${product.name}</h1>
+                        <p>${product.description}</p>
+                        ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
+                    </div>
+                </body>
+                </html>
+            `);
+            detailsWindow.document.close();
+        }
+
+        function toggleSale(id) {
+            const product = products.find(p => p.id === id);
+            if (product) {
+                product.onSale = !product.onSale;
+                localStorage.setItem('products', JSON.stringify(products));
+                renderProducts();
+            }
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const name = prompt('Edit Product Name:', product.name);
+            const description = prompt('Edit Product Description:', product.description);
+            const previewImage = prompt('Edit Preview Image URL:', product.previewImage);
+            const additionalImages = prompt('Edit Additional Image URLs (comma-separated):', product.additionalImages.join(','));
+
+            if (name && description && previewImage) {
+                product.name = name;
+                product.description = description;
+                product.previewImage = previewImage;
+                product.additionalImages = additionalImages.split(',').map(img => img.trim());
+                localStorage.setItem('products', JSON.stringify(products));
+                renderProducts();
+            }
+        }
+
         document.getElementById('search-bar').addEventListener('input', (e) => {
             const searchValue = e.target.value.toLowerCase();
             const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue));
@@ -255,3 +328,4 @@
     </script>
 </body>
 </html>
+
