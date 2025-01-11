@@ -1,179 +1,103 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce Website</title>
+    <title>My Portfolio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            color: #333;
         }
+
         header {
-            background-color: #333;
+            background-color: #4CAF50;
             color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 1rem 0;
+            text-align: center;
         }
-        header a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-        }
-        .product-list {
+
+        nav {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 1rem;
-            margin: 2rem;
+            background-color: #333;
         }
-        .product-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 200px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 1rem;
-        }
-        .product-card img {
-            max-width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 1rem;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: #333;
+
+        nav a {
             color: white;
-            margin-top: 2rem;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
         }
-        .admin-panel {
-            max-width: 800px;
+
+        nav a:hover {
+            background-color: #575757;
+        }
+
+        .container {
+            max-width: 1100px;
             margin: 2rem auto;
             padding: 1rem;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .admin-panel form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+
+        .section {
+            margin-bottom: 2rem;
         }
-        .admin-panel form input, .admin-panel form textarea, .admin-panel form button {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
+        .section h2 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 0.5rem;
         }
-        .admin-panel form button {
-            background: #333;
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #333;
             color: white;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>My Shop</h1>
-        <nav>
-            <a href="#">Sign In</a>
-            <a href="#">Sign Up</a>
-        </nav>
+        <h1>Welcome to My Portfolio</h1>
     </header>
 
-    <div class="product-list">
-        <!-- Example product card -->
-        <div class="product-card">
-            <img src="placeholder.jpg" alt="Product Image">
-            <h2>Product Name</h2>
-            <p>Product Description</p>
-            <button>More Info</button>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="container">
+        <div id="about" class="section">
+            <h2>About Me</h2>
+            <p>Hello! I'm [Your Name], a [Your Profession or Role] with a passion for [Your Interests or Specializations]. I love creating and building innovative solutions for modern problems.</p>
         </div>
-        <!-- More product cards will be dynamically generated here -->
+
+        <div id="projects" class="section">
+            <h2>Projects</h2>
+            <ul>
+                <li><strong>Project 1:</strong> Description of project 1.</li>
+                <li><strong>Project 2:</strong> Description of project 2.</li>
+                <li><strong>Project 3:</strong> Description of project 3.</li>
+            </ul>
+        </div>
+
+        <div id="contact" class="section">
+            <h2>Contact</h2>
+            <p>Email: <a href="mailto:yourname@example.com">yourname@example.com</a></p>
+            <p>Phone: +123-456-7890</p>
+            <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
+        </div>
     </div>
 
     <footer>
-        <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
+        <p>&copy; 2025 [Your Name]. All Rights Reserved.</p>
     </footer>
-
-    <section class="admin-panel">
-        <h2>Admin Panel</h2>
-        <form id="admin-form">
-            <label for="product-name">Product Name</label>
-            <input type="text" id="product-name" placeholder="Enter product name" required>
-
-            <label for="product-description">Product Description</label>
-            <textarea id="product-description" placeholder="Enter product description" required></textarea>
-
-            <label for="product-image">Product Image URL</label>
-            <input type="text" id="product-image" placeholder="Enter product image URL" required>
-
-            <button type="submit">Add Product</button>
-        </form>
-    </section>
-
-    <script>
-        // Example data structure for products
-        let products = [];
-
-        // Admin form submission handler
-        const adminForm = document.getElementById('admin-form');
-        adminForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('product-name').value;
-            const description = document.getElementById('product-description').value;
-            const image = document.getElementById('product-image').value;
-
-            const product = {
-                id: Math.random().toString(36).substr(2, 9), // Generate random ID
-                name,
-                description,
-                image,
-                onSale: true,
-            };
-
-            products.push(product);
-            renderProducts();
-            adminForm.reset();
-        });
-
-        // Render products
-        function renderProducts() {
-            const productList = document.querySelector('.product-list');
-            productList.innerHTML = '';
-
-            products.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
-
-                    productCard.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>${product.description}</p>
-                        <button onclick="toggleSale('${product.id}')">Remove from Sale</button>
-                    `;
-
-                    productList.appendChild(productCard);
-                }
-            });
-        }
-
-        // Toggle product sale status
-        function toggleSale(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                product.onSale = !product.onSale;
-                renderProducts();
-            }
-        }
-    </script>
 </body>
 </html>
