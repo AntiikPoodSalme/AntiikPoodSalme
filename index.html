@@ -24,6 +24,17 @@
             text-decoration: none;
             margin: 0 1rem;
         }
+        .search-bar {
+            margin: 1rem auto;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 0.5rem;
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
         .product-list {
             display: flex;
             flex-wrap: wrap;
@@ -92,6 +103,18 @@
             height: auto;
             margin-bottom: 1rem;
         }
+        @media (max-width: 768px) {
+            .product-card {
+                width: 100%;
+                max-width: 300px;
+            }
+            .admin-panel {
+                width: 90%;
+            }
+            .product-details {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -101,6 +124,10 @@
             <a href="#" id="sign-in">Sign In</a>
         </nav>
     </header>
+
+    <div class="search-bar">
+        <input type="text" id="search-bar" placeholder="Search products...">
+    </div>
 
     <div class="product-list">
         <!-- Product cards will be dynamically generated here -->
@@ -112,24 +139,22 @@
 
     <section class="admin-panel" id="admin-panel">
         <h2>Admin Panel</h2>
+        <div id="admin-product-list">
+            <!-- Editable product list for admin -->
+        </div>
         <form id="admin-form">
-            <!-- Input for product name -->
             <label for="product-name">Product Name</label>
             <input type="text" id="product-name" placeholder="Enter product name" required>
 
-            <!-- Input for product description -->
             <label for="product-description">Product Description</label>
             <textarea id="product-description" placeholder="Enter product description" required></textarea>
 
-            <!-- Input for preview image URL -->
             <label for="product-image">Preview Image URL</label>
             <input type="text" id="product-image" placeholder="Enter preview image URL" required>
 
-            <!-- Input for additional images -->
             <label for="additional-images">Additional Image URLs (comma separated)</label>
             <input type="text" id="additional-images" placeholder="Enter additional image URLs">
 
-            <!-- Button to add product -->
             <button type="submit">Add Product</button>
         </form>
     </section>
@@ -138,12 +163,10 @@
         let products = JSON.parse(localStorage.getItem('products')) || [];
         let isAdmin = false; // Flag to check if the user is an admin
 
-        // Sign-in functionality
         document.getElementById('sign-in').addEventListener('click', () => {
             const email = prompt('Enter your email:');
             const password = prompt('Enter your password:');
 
-            // Check if the entered credentials match the admin credentials
             if (email === 'admin@web.com' && password === 'adminpass123') {
                 isAdmin = true;
                 alert('Welcome back, Admin!');
@@ -153,7 +176,6 @@
             }
         });
 
-        // Admin panel form submission
         const adminForm = document.getElementById('admin-form');
         adminForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -162,7 +184,6 @@
             const previewImage = document.getElementById('product-image').value;
             const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
 
-            // Create a new product object
             const product = {
                 id: Math.random().toString(36).substr(2, 9),
                 name,
@@ -178,7 +199,6 @@
             adminForm.reset();
         });
 
-        // Render products on the main page
         function renderProducts() {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
@@ -202,82 +222,33 @@
             });
         }
 
-        // Toggle product sale status
-        function toggleSale(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                product.onSale = !product.onSale;
-                localStorage.setItem('products', JSON.stringify(products));
-                renderProducts();
-            }
-        }
+        document.getElementById('search-bar').addEventListener('input', (e) => {
+            const searchValue = e.target.value.toLowerCase();
+            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchValue));
+            renderFilteredProducts(filteredProducts);
+        });
 
-        // View detailed product information
-        function viewProduct(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                const productPage = window.open('', '_blank');
-                productPage.document.write(`
-                    <html>
-                    <head>
-                        <title>${product.name}</title>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                                margin: 0;
-                                padding: 2rem;
-                                background-color: #f4f4f4;
-                            }
-                            .product-details {
-                                max-width: 800px;
-                                margin: 2rem auto;
-                                padding: 1rem;
-                                background: white;
-                                border: 1px solid #ddd;
-                                border-radius: 5px;
-                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                                text-align: center;
-                            }
-                            .product-details img {
-                                max-width: 100%;
-                                height: auto;
-                                margin-bottom: 1rem;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="product-details">
-                            <h1>${product.name}</h1>
-                            <img src="${product.previewImage}" alt="${product.name}">
-                            <p>${product.description}</p>
-                            <h3>Additional Images:</h3>
-                            <div>${product.additionalImages.map(img => `<img src="${img}" alt="Additional Image">`).join('')}</div>
-                        </div>
-                    </body>
-                    </html>
-                `);
-            }
-        }
+        function renderFilteredProducts(filteredProducts) {
+            const productList = document.querySelector('.product-list');
+            productList.innerHTML = '';
 
-        // Edit an existing product
-        function editProduct(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                const name = prompt('Edit Product Name:', product.name);
-                const description = prompt('Edit Product Description:', product.description);
-                const previewImage = prompt('Edit Preview Image URL:', product.previewImage);
-                const additionalImages = prompt('Edit Additional Image URLs (comma separated):', product.additionalImages.join(','));
+            filteredProducts.forEach(product => {
+                if (product.onSale) {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
 
-                if (name && description && previewImage && additionalImages !== null) {
-                    product.name = name;
-                    product.description = description;
-                    product.previewImage = previewImage;
-                    product.additionalImages = additionalImages.split(',').map(img => img.trim());
+                    productCard.innerHTML = `
+                        <img src="${product.previewImage}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>${product.description.substring(0, 50)}...</p>
+                        <button onclick="viewProduct('${product.id}')">More Info</button>
+                        ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
+                        ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
+                    `;
 
-                    localStorage.setItem('products', JSON.stringify(products));
-                    renderProducts();
+                    productList.appendChild(productCard);
                 }
-            }
+            });
         }
 
         renderProducts();
