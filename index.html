@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem;
+        }
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 1rem;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: white;
+            margin-top: 2rem;
+        }
+        .admin-panel {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .admin-panel form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .admin-panel form input, .admin-panel form textarea, .admin-panel form button {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .admin-panel form button {
+            background: #333;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Shop</h1>
+        <nav>
+            <a href="#">Sign In</a>
+            <a href="#">Sign Up</a>
+        </nav>
+    </header>
+
+    <div class="product-list">
+        <!-- Example product card -->
+        <div class="product-card">
+            <img src="placeholder.jpg" alt="Product Image">
+            <h2>Product Name</h2>
+            <p>Product Description</p>
+            <button>More Info</button>
+        </div>
+        <!-- More product cards will be dynamically generated here -->
+    </div>
+
+    <footer>
+        <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
+    </footer>
+
+    <section class="admin-panel">
+        <h2>Admin Panel</h2>
+        <form id="admin-form">
+            <label for="product-name">Product Name</label>
+            <input type="text" id="product-name" placeholder="Enter product name" required>
+
+            <label for="product-description">Product Description</label>
+            <textarea id="product-description" placeholder="Enter product description" required></textarea>
+
+            <label for="product-image">Product Image URL</label>
+            <input type="text" id="product-image" placeholder="Enter product image URL" required>
+
+            <button type="submit">Add Product</button>
+        </form>
+    </section>
+
+    <script>
+        // Example data structure for products
+        let products = [];
+
+        // Admin form submission handler
+        const adminForm = document.getElementById('admin-form');
+        adminForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('product-name').value;
+            const description = document.getElementById('product-description').value;
+            const image = document.getElementById('product-image').value;
+
+            const product = {
+                id: Math.random().toString(36).substr(2, 9), // Generate random ID
+                name,
+                description,
+                image,
+                onSale: true,
+            };
+
+            products.push(product);
+            renderProducts();
+            adminForm.reset();
+        });
+
+        // Render products
+        function renderProducts() {
+            const productList = document.querySelector('.product-list');
+            productList.innerHTML = '';
+
+            products.forEach(product => {
+                if (product.onSale) {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
+
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>${product.description}</p>
+                        <button onclick="toggleSale('${product.id}')">Remove from Sale</button>
+                    `;
+
+                    productList.appendChild(productCard);
+                }
+            });
+        }
+
+        // Toggle product sale status
+        function toggleSale(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                product.onSale = !product.onSale;
+                renderProducts();
+            }
+        }
+    </script>
+</body>
+</html>
