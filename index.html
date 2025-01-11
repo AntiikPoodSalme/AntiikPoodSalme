@@ -97,11 +97,16 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
         }
         .product-details img {
             max-width: 100%;
             height: auto;
             margin-bottom: 1rem;
+        }
+        .show-more {
+            color: blue;
+            cursor: pointer;
         }
         @media (max-width: 768px) {
             .product-card {
@@ -208,10 +213,14 @@
                     const productCard = document.createElement('div');
                     productCard.classList.add('product-card');
 
+                    const shortDescription = product.description.length > 50 
+                        ? `${product.description.substring(0, 50)}...` 
+                        : product.description;
+
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description.substring(0, 50)}...</p>
+                        <p>${shortDescription}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -246,11 +255,16 @@
                             border: 1px solid #ddd;
                             border-radius: 5px;
                             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                            word-wrap: break-word;
                         }
                         .product-details img {
                             max-width: 100%;
                             height: auto;
                             margin-bottom: 1rem;
+                        }
+                        .show-more {
+                            color: blue;
+                            cursor: pointer;
                         }
                     </style>
                 </head>
@@ -310,10 +324,14 @@
                     const productCard = document.createElement('div');
                     productCard.classList.add('product-card');
 
+                    const shortDescription = product.description.length > 50 
+                        ? `${product.description.substring(0, 50)}...` 
+                        : product.description;
+
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description.substring(0, 50)}...</p>
+                        <p>${shortDescription}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -328,4 +346,3 @@
     </script>
 </body>
 </html>
-
