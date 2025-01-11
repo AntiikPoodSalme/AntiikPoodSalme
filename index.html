@@ -99,10 +99,10 @@
     <footer>
         <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
         <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
+            <img src="Images/youtube-icon.png" alt="YouTube">
         </a>
         <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/TikTok_logo.svg" alt="TikTok">
+            <img src="Images/tiktok-icon.png" alt="TikTok">
         </a>
     </footer>
 
@@ -168,26 +168,25 @@
             adminForm.reset();
         });
 
-        function truncateText(text, maxLength) {
-            return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
-        }
+        document.getElementById('search-bar').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+            renderProducts(filteredProducts);
+        });
 
-        function renderProducts() {
+        function renderProducts(filteredProducts = products) {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
 
-            products.forEach(product => {
+            filteredProducts.forEach(product => {
                 if (product.onSale) {
                     const productCard = document.createElement('div');
                     productCard.classList.add('product-card');
 
-                    const shortName = truncateText(product.name, 20);
-                    const shortDescription = truncateText(product.description, 50);
-
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${shortName}</h2>
-                        <p>${shortDescription}</p>
+                        <h2>${truncateText(product.name, 20)}</h2>
+                        <p>${truncateText(product.description, 50)}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -196,6 +195,10 @@
                     productList.appendChild(productCard);
                 }
             });
+        }
+
+        function truncateText(text, maxLength) {
+            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
         }
 
         function viewProduct(id) {
