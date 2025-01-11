@@ -78,6 +78,20 @@
             color: white;
             cursor: pointer;
         }
+        .product-details {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product-details img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -193,13 +207,38 @@
                     <html>
                     <head>
                         <title>${product.name}</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                margin: 0;
+                                padding: 2rem;
+                                background-color: #f4f4f4;
+                            }
+                            .product-details {
+                                max-width: 800px;
+                                margin: 2rem auto;
+                                padding: 1rem;
+                                background: white;
+                                border: 1px solid #ddd;
+                                border-radius: 5px;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                                text-align: center;
+                            }
+                            .product-details img {
+                                max-width: 100%;
+                                height: auto;
+                                margin-bottom: 1rem;
+                            }
+                        </style>
                     </head>
                     <body>
-                        <h1>${product.name}</h1>
-                        <img src="${product.previewImage}" alt="${product.name}" style="max-width: 100%;">
-                        <p>${product.description}</p>
-                        <h3>Additional Images:</h3>
-                        <div>${product.additionalImages.map(img => `<img src="${img}" alt="Additional Image" style="max-width: 100%; margin: 10px 0;">`).join('')}</div>
+                        <div class="product-details">
+                            <h1>${product.name}</h1>
+                            <img src="${product.previewImage}" alt="${product.name}">
+                            <p>${product.description}</p>
+                            <h3>Additional Images:</h3>
+                            <div>${product.additionalImages.map(img => `<img src="${img}" alt="Additional Image">`).join('')}</div>
+                        </div>
                     </body>
                     </html>
                 `);
