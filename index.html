@@ -58,6 +58,13 @@
             border-bottom: 1px solid #ddd;
             margin-bottom: 1rem;
         }
+        .product-card p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 3em;
+            line-height: 1.5em;
+        }
         footer {
             text-align: center;
             padding: 1rem;
@@ -224,7 +231,7 @@
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description}</p>
+                        <p>${product.description.length > 100 ? product.description.slice(0, 100) + '...' : product.description}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -332,7 +339,7 @@
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description}</p>
+                        <p>${product.description.length > 100 ? product.description.slice(0, 100) + '...' : product.description}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
