@@ -58,13 +58,6 @@
             border-bottom: 1px solid #ddd;
             margin-bottom: 1rem;
         }
-        .product-card p {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-height: 3em;
-            line-height: 1.5em;
-        }
         footer {
             text-align: center;
             padding: 1rem;
@@ -147,8 +140,11 @@
             <label for="product-name">Product Name</label>
             <input type="text" id="product-name" placeholder="Enter product name" required>
 
-            <label for="product-description">Product Description</label>
-            <textarea id="product-description" placeholder="Enter product description" required></textarea>
+            <label for="product-price">Product Price</label>
+            <input type="number" id="product-price" placeholder="Enter product price" required>
+
+            <label for="product-id">Product ID</label>
+            <input type="text" id="product-id" placeholder="Enter product ID" required>
 
             <label for="product-image">Preview Image URL</label>
             <input type="text" id="product-image" placeholder="Enter preview image URL" required>
@@ -166,8 +162,11 @@
             <label for="edit-product-name">Product Name</label>
             <input type="text" id="edit-product-name" placeholder="Enter product name" required>
 
-            <label for="edit-product-description">Product Description</label>
-            <textarea id="edit-product-description" placeholder="Enter product description" required></textarea>
+            <label for="edit-product-price">Product Price</label>
+            <input type="number" id="edit-product-price" placeholder="Enter product price" required>
+
+            <label for="edit-product-id">Product ID</label>
+            <input type="text" id="edit-product-id" placeholder="Enter product ID" required>
 
             <label for="edit-product-image">Preview Image URL</label>
             <input type="text" id="edit-product-image" placeholder="Enter preview image URL" required>
@@ -200,14 +199,16 @@
         adminForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('product-name').value;
-            const description = document.getElementById('product-description').value;
+            const price = document.getElementById('product-price').value;
+            const id = document.getElementById('product-id').value;
             const previewImage = document.getElementById('product-image').value;
             const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
 
             const product = {
-                id: Math.random().toString(36).substr(2, 9),
+                id,
                 name,
-                description,
+                price,
+                description: '',
                 previewImage,
                 additionalImages,
                 onSale: true,
@@ -231,7 +232,8 @@
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description.length > 100 ? product.description.slice(0, 100) + '...' : product.description}</p>
+                        <p>Price: $${product.price}</p>
+                        <p>ID: ${product.id}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -250,13 +252,15 @@
             document.getElementById('admin-panel').style.display = 'none';
 
             document.getElementById('edit-product-name').value = product.name;
-            document.getElementById('edit-product-description').value = product.description;
+            document.getElementById('edit-product-price').value = product.price;
+            document.getElementById('edit-product-id').value = product.id;
             document.getElementById('edit-product-image').value = product.previewImage;
             document.getElementById('edit-additional-images').value = product.additionalImages.join(', ');
 
             document.getElementById('save-changes').onclick = () => {
                 product.name = document.getElementById('edit-product-name').value;
-                product.description = document.getElementById('edit-product-description').value;
+                product.price = document.getElementById('edit-product-price').value;
+                product.id = document.getElementById('edit-product-id').value;
                 product.previewImage = document.getElementById('edit-product-image').value;
                 product.additionalImages = document.getElementById('edit-additional-images').value.split(',').map(img => img.trim());
 
@@ -304,6 +308,8 @@
                     <div class="product-details">
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h1>${product.name}</h1>
+                        <p>Price: $${product.price}</p>
+                        <p>ID: ${product.id}</p>
                         <p>${product.description}</p>
                         ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
                     </div>
@@ -339,7 +345,8 @@
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description.length > 100 ? product.description.slice(0, 100) + '...' : product.description}</p>
+                        <p>Price: $${product.price}</p>
+                        <p>ID: ${product.id}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -352,3 +359,4 @@
     </script>
 </body>
 </html>
+
