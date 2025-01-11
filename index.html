@@ -78,6 +78,31 @@
             height: 24px;
             cursor: pointer;
         }
+        .admin-panel, .edit-panel {
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .admin-panel h2, .edit-panel h2 {
+            text-align: center;
+        }
+        .admin-panel form, .edit-panel form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .admin-panel button, .edit-panel button {
+            padding: 0.5rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -128,6 +153,25 @@
         </form>
     </section>
 
+    <section class="edit-panel" id="edit-panel" style="display: none;">
+        <h2>Edit Product</h2>
+        <form id="edit-form">
+            <label for="edit-product-name">Product Name</label>
+            <input type="text" id="edit-product-name" placeholder="Enter product name" required>
+
+            <label for="edit-product-description">Product Description</label>
+            <textarea id="edit-product-description" placeholder="Enter product description" required></textarea>
+
+            <label for="edit-product-image">Preview Image URL</label>
+            <input type="text" id="edit-product-image" placeholder="Enter preview image URL" required>
+
+            <label for="edit-additional-images">Additional Image URLs (comma separated)</label>
+            <input type="text" id="edit-additional-images" placeholder="Enter additional image URLs">
+
+            <button type="button" id="save-changes">Save Changes</button>
+        </form>
+    </section>
+
     <script>
         let products = JSON.parse(localStorage.getItem('products')) || [];
         let isAdmin = false;
@@ -168,25 +212,19 @@
             adminForm.reset();
         });
 
-        document.getElementById('search-bar').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
-            renderProducts(filteredProducts);
-        });
-
-        function renderProducts(filteredProducts = products) {
+        function renderProducts() {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
 
-            filteredProducts.forEach(product => {
+            products.forEach(product => {
                 if (product.onSale) {
                     const productCard = document.createElement('div');
                     productCard.classList.add('product-card');
 
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${truncateText(product.name, 20)}</h2>
-                        <p>${truncateText(product.description, 50)}</p>
+                        <h2>${product.name}</h2>
+                        <p>${product.description}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                         ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
@@ -197,8 +235,29 @@
             });
         }
 
-        function truncateText(text, maxLength) {
-            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('edit-panel').style.display = 'block';
+            document.getElementById('admin-panel').style.display = 'none';
+
+            document.getElementById('edit-product-name').value = product.name;
+            document.getElementById('edit-product-description').value = product.description;
+            document.getElementById('edit-product-image').value = product.previewImage;
+            document.getElementById('edit-additional-images').value = product.additionalImages.join(', ');
+
+            document.getElementById('save-changes').onclick = () => {
+                product.name = document.getElementById('edit-product-name').value;
+                product.description = document.getElementById('edit-product-description').value;
+                product.previewImage = document.getElementById('edit-product-image').value;
+                product.additionalImages = document.getElementById('edit-additional-images').value.split(',').map(img => img.trim());
+
+                localStorage.setItem('products', JSON.stringify(products));
+                document.getElementById('edit-panel').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                renderProducts();
+            };
         }
 
         function viewProduct(id) {
@@ -257,6 +316,32 @@
         }
 
         renderProducts();
+
+        document.getElementById('search-bar').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+
+            const productList = document.querySelector('.product-list');
+            productList.innerHTML = '';
+
+            filteredProducts.forEach(product => {
+                if (product.onSale) {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
+
+                    productCard.innerHTML = `
+                        <img src="${product.previewImage}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>${product.description}</p>
+                        <button onclick="viewProduct('${product.id}')">More Info</button>
+                        ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
+                        ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
+                    `;
+
+                    productList.appendChild(productCard);
+                }
+            });
+        });
     </script>
 </body>
 </html>
