@@ -106,8 +106,11 @@
             <label for="product-description">Product Description</label>
             <textarea id="product-description" placeholder="Enter product description" required></textarea>
 
-            <label for="product-image">Product Image URL</label>
-            <input type="text" id="product-image" placeholder="Enter product image URL" required>
+            <label for="product-image">Preview Image URL</label>
+            <input type="text" id="product-image" placeholder="Enter preview image URL" required>
+
+            <label for="additional-images">Additional Image URLs (comma separated)</label>
+            <input type="text" id="additional-images" placeholder="Enter additional image URLs">
 
             <button type="submit">Add Product</button>
         </form>
@@ -132,13 +135,15 @@
             e.preventDefault();
             const name = document.getElementById('product-name').value;
             const description = document.getElementById('product-description').value;
-            const image = document.getElementById('product-image').value;
+            const previewImage = document.getElementById('product-image').value;
+            const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
 
             const product = {
                 id: Math.random().toString(36).substr(2, 9),
                 name,
                 description,
-                image,
+                previewImage,
+                additionalImages,
                 onSale: true,
             };
 
@@ -158,10 +163,11 @@
                     productCard.classList.add('product-card');
 
                     productCard.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>${product.description}</p>
+                        <p>${product.description.substring(0, 50)}...</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
+                        ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
                         ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
                     `;
 
@@ -182,7 +188,41 @@
         function viewProduct(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
-                alert(`Name: ${product.name}\nDescription: ${product.description}`);
+                const productPage = window.open('', '_blank');
+                productPage.document.write(`
+                    <html>
+                    <head>
+                        <title>${product.name}</title>
+                    </head>
+                    <body>
+                        <h1>${product.name}</h1>
+                        <img src="${product.previewImage}" alt="${product.name}" style="max-width: 100%;">
+                        <p>${product.description}</p>
+                        <h3>Additional Images:</h3>
+                        <div>${product.additionalImages.map(img => `<img src="${img}" alt="Additional Image" style="max-width: 100%; margin: 10px 0;">`).join('')}</div>
+                    </body>
+                    </html>
+                `);
+            }
+        }
+
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const name = prompt('Edit Product Name:', product.name);
+                const description = prompt('Edit Product Description:', product.description);
+                const previewImage = prompt('Edit Preview Image URL:', product.previewImage);
+                const additionalImages = prompt('Edit Additional Image URLs (comma separated):', product.additionalImages.join(','));
+
+                if (name && description && previewImage && additionalImages !== null) {
+                    product.name = name;
+                    product.description = description;
+                    product.previewImage = previewImage;
+                    product.additionalImages = additionalImages.split(',').map(img => img.trim());
+
+                    localStorage.setItem('products', JSON.stringify(products));
+                    renderProducts();
+                }
             }
         }
 
@@ -190,3 +230,4 @@
     </script>
 </body>
 </html>
+
