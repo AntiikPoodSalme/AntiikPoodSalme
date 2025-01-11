@@ -61,6 +61,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none;
         }
         .admin-panel form {
             display: flex;
@@ -83,27 +84,20 @@
     <header>
         <h1>My Shop</h1>
         <nav>
-            <a href="#">Sign In</a>
-            <a href="#">Sign Up</a>
+            <a href="#" id="sign-in">Sign In</a>
+            <a href="#" id="sign-up">Sign Up</a>
         </nav>
     </header>
 
     <div class="product-list">
-        <!-- Example product card -->
-        <div class="product-card">
-            <img src="placeholder.jpg" alt="Product Image">
-            <h2>Product Name</h2>
-            <p>Product Description</p>
-            <button>More Info</button>
-        </div>
-        <!-- More product cards will be dynamically generated here -->
+        <!-- Product cards will be dynamically generated here -->
     </div>
 
     <footer>
         <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
     </footer>
 
-    <section class="admin-panel">
+    <section class="admin-panel" id="admin-panel">
         <h2>Admin Panel</h2>
         <form id="admin-form">
             <label for="product-name">Product Name</label>
@@ -120,10 +114,19 @@
     </section>
 
     <script>
-        // Example data structure for products
-        let products = [];
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        let isAdmin = false; // Simulated admin status, replace with real authentication check
 
-        // Admin form submission handler
+        document.getElementById('sign-in').addEventListener('click', () => {
+            const email = prompt('Enter your email:');
+            if (email === 'admin@example.com') {
+                isAdmin = true;
+                document.getElementById('admin-panel').style.display = 'block';
+            } else {
+                alert('Welcome, user!');
+            }
+        });
+
         const adminForm = document.getElementById('admin-form');
         adminForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -132,7 +135,7 @@
             const image = document.getElementById('product-image').value;
 
             const product = {
-                id: Math.random().toString(36).substr(2, 9), // Generate random ID
+                id: Math.random().toString(36).substr(2, 9),
                 name,
                 description,
                 image,
@@ -140,11 +143,11 @@
             };
 
             products.push(product);
+            localStorage.setItem('products', JSON.stringify(products));
             renderProducts();
             adminForm.reset();
         });
 
-        // Render products
         function renderProducts() {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
@@ -158,7 +161,8 @@
                         <img src="${product.image}" alt="${product.name}">
                         <h2>${product.name}</h2>
                         <p>${product.description}</p>
-                        <button onclick="toggleSale('${product.id}')">Remove from Sale</button>
+                        <button onclick="viewProduct('${product.id}')">More Info</button>
+                        ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
                     `;
 
                     productList.appendChild(productCard);
@@ -166,14 +170,23 @@
             });
         }
 
-        // Toggle product sale status
         function toggleSale(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
                 product.onSale = !product.onSale;
+                localStorage.setItem('products', JSON.stringify(products));
                 renderProducts();
             }
         }
+
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                alert(`Name: ${product.name}\nDescription: ${product.description}`);
+            }
+        }
+
+        renderProducts();
     </script>
 </body>
 </html>
