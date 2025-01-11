@@ -99,7 +99,6 @@
         <h1>My Shop</h1>
         <nav>
             <a href="#" id="sign-in">Sign In</a>
-            <a href="#" id="sign-up">Sign Up</a>
         </nav>
     </header>
 
@@ -114,36 +113,47 @@
     <section class="admin-panel" id="admin-panel">
         <h2>Admin Panel</h2>
         <form id="admin-form">
+            <!-- Input for product name -->
             <label for="product-name">Product Name</label>
             <input type="text" id="product-name" placeholder="Enter product name" required>
 
+            <!-- Input for product description -->
             <label for="product-description">Product Description</label>
             <textarea id="product-description" placeholder="Enter product description" required></textarea>
 
+            <!-- Input for preview image URL -->
             <label for="product-image">Preview Image URL</label>
             <input type="text" id="product-image" placeholder="Enter preview image URL" required>
 
+            <!-- Input for additional images -->
             <label for="additional-images">Additional Image URLs (comma separated)</label>
             <input type="text" id="additional-images" placeholder="Enter additional image URLs">
 
+            <!-- Button to add product -->
             <button type="submit">Add Product</button>
         </form>
     </section>
 
     <script>
         let products = JSON.parse(localStorage.getItem('products')) || [];
-        let isAdmin = false; // Simulated admin status, replace with real authentication check
+        let isAdmin = false; // Flag to check if the user is an admin
 
+        // Sign-in functionality
         document.getElementById('sign-in').addEventListener('click', () => {
             const email = prompt('Enter your email:');
-            if (email === 'admin@example.com') {
+            const password = prompt('Enter your password:');
+
+            // Check if the entered credentials match the admin credentials
+            if (email === 'admin@web.com' && password === 'adminpass123') {
                 isAdmin = true;
+                alert('Welcome back, Admin!');
                 document.getElementById('admin-panel').style.display = 'block';
             } else {
-                alert('Welcome, user!');
+                alert('You are not an admin.');
             }
         });
 
+        // Admin panel form submission
         const adminForm = document.getElementById('admin-form');
         adminForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -152,6 +162,7 @@
             const previewImage = document.getElementById('product-image').value;
             const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
 
+            // Create a new product object
             const product = {
                 id: Math.random().toString(36).substr(2, 9),
                 name,
@@ -167,6 +178,7 @@
             adminForm.reset();
         });
 
+        // Render products on the main page
         function renderProducts() {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
@@ -190,6 +202,7 @@
             });
         }
 
+        // Toggle product sale status
         function toggleSale(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
@@ -199,6 +212,7 @@
             }
         }
 
+        // View detailed product information
         function viewProduct(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
@@ -245,6 +259,7 @@
             }
         }
 
+        // Edit an existing product
         function editProduct(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
