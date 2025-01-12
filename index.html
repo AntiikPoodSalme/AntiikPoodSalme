@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce Website</title>
+    <title>AntiikPoodSalme</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,7 +92,7 @@
 </head>
 <body>
     <header>
-        <h1>My Shop</h1>
+        <h1>AntiikPoodSalme</h1>
         <nav>
             <a href="#" id="how-to-buy">How To Buy</a>
         </nav>
@@ -152,7 +152,7 @@
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>Price: $${product.price}</p>
+                        <p>Price: €${product.price}</p>
                         <p>ID: ${product.id}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                     `;
@@ -199,7 +199,7 @@
                     <div class="product-details">
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h1>${product.name}</h1>
-                        <p>Price: $${product.price}</p>
+                        <p>Price: €${product.price}</p>
                         <p>ID: ${product.id}</p>
                         <p>${product.description}</p>
                         ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
@@ -227,7 +227,7 @@
                     productCard.innerHTML = `
                         <img src="${product.previewImage}" alt="${product.name}">
                         <h2>${product.name}</h2>
-                        <p>Price: $${product.price}</p>
+                        <p>Price: €${product.price}</p>
                         <p>ID: ${product.id}</p>
                         <button onclick="viewProduct('${product.id}')">More Info</button>
                     `;
