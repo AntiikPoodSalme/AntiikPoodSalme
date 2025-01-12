@@ -75,6 +75,9 @@
             justify-content: center;
             align-items: center;
             gap: 1rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
         footer a {
             color: white;
@@ -96,7 +99,7 @@
     </header>
 
     <div class="search-bar">
-        <input type="text" id="search-bar" placeholder="Search products...">
+        <input type="text" id="search-bar" placeholder="Search by name or ID...">
     </div>
 
     <div class="product-list">
@@ -209,7 +212,9 @@
 
         document.getElementById('search-bar').addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(query) || product.id.toLowerCase().includes(query)
+            );
 
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
