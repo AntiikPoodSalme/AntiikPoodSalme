@@ -1,377 +1,209 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-        }
-        .search-bar {
-            margin: 1rem auto;
-            text-align: center;
-        }
-        .search-bar input {
-            padding: 0.5rem;
-            width: 80%;
-            max-width: 500px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .product-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem;
-        }
-        .product-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 200px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 1rem;
-            word-wrap: break-word;
-        }
-        .product-card img {
-            max-width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 1rem;
-        }
-        .product-card p {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-height: 3em;
-            line-height: 1.5em;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: #333;
-            color: white;
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-        }
-        footer a {
-            color: white;
-            text-decoration: none;
-        }
-        footer img {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-        .admin-panel, .edit-panel {
-            max-width: 800px;
-            margin: auto;
-            padding: 2rem;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .admin-panel h2, .edit-panel h2 {
-            text-align: center;
-        }
-        .admin-panel form, .edit-panel form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .admin-panel button, .edit-panel button {
-            padding: 0.5rem;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>My Shop</h1>
-        <nav>
-            <a href="#" id="sign-in">Sign In</a>
-        </nav>
-    </header>
+<script>
+    let products = [];
+    let isAdmin = false;
 
-    <div class="search-bar">
-        <input type="text" id="search-bar" placeholder="Search products...">
-    </div>
-
-    <div class="product-list">
-        <!-- Product cards will be dynamically generated here -->
-    </div>
-
-    <footer>
-        <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
-        <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-            <img src="Images/youtube-icon.png" alt="YouTube">
-        </a>
-        <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-            <img src="Images/tiktok-icon.png" alt="TikTok">
-        </a>
-    </footer>
-
-    <section class="admin-panel" id="admin-panel" style="display: none;">
-        <h2>Admin Panel</h2>
-        <div id="admin-product-list">
-            <!-- Editable product list for admin -->
-        </div>
-        <form id="admin-form">
-            <label for="product-name">Product Name</label>
-            <input type="text" id="product-name" placeholder="Enter product name" required>
-
-            <label for="product-price">Price</label>
-            <input type="number" id="product-price" placeholder="Enter product price" required>
-
-            <label for="product-id">Product ID</label>
-            <input type="text" id="product-id" placeholder="Enter product ID" required>
-
-            <label for="product-description">Product Description</label>
-            <textarea id="product-description" placeholder="Enter product description" required></textarea>
-
-            <label for="product-image">Preview Image URL</label>
-            <input type="text" id="product-image" placeholder="Enter preview image URL" required>
-
-            <label for="additional-images">Additional Image URLs (comma separated)</label>
-            <input type="text" id="additional-images" placeholder="Enter additional image URLs">
-
-            <button type="submit">Add Product</button>
-        </form>
-    </section>
-
-    <section class="edit-panel" id="edit-panel" style="display: none;">
-        <h2>Edit Product</h2>
-        <form id="edit-form">
-            <label for="edit-product-name">Product Name</label>
-            <input type="text" id="edit-product-name" placeholder="Enter product name" required>
-
-            <label for="edit-product-price">Price</label>
-            <input type="number" id="edit-product-price" placeholder="Enter product price" required>
-
-            <label for="edit-product-id">Product ID</label>
-            <input type="text" id="edit-product-id" placeholder="Enter product ID" required>
-
-            <label for="edit-product-description">Product Description</label>
-            <textarea id="edit-product-description" placeholder="Enter product description" required></textarea>
-
-            <label for="edit-product-image">Preview Image URL</label>
-            <input type="text" id="edit-product-image" placeholder="Enter preview image URL" required>
-
-            <label for="edit-additional-images">Additional Image URLs (comma separated)</label>
-            <input type="text" id="edit-additional-images" placeholder="Enter additional image URLs">
-
-            <button type="button" id="save-changes">Save Changes</button>
-        </form>
-    </section>
-
-    <script>
-        let products = JSON.parse(localStorage.getItem('products')) || [];
-        let isAdmin = false;
-
-        document.getElementById('sign-in').addEventListener('click', () => {
-            const email = prompt('Enter your email:');
-            const password = prompt('Enter your password:');
-
-            if (email === 'admin@web.com' && password === 'adminpass123') {
-                isAdmin = true;
-                alert('Welcome back, Admin!');
-                document.getElementById('admin-panel').style.display = 'block';
-            } else {
-                alert('You are not an admin.');
-            }
-        });
-
-        const adminForm = document.getElementById('admin-form');
-        adminForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('product-name').value;
-            const price = parseFloat(document.getElementById('product-price').value);
-            const id = document.getElementById('product-id').value;
-            const description = document.getElementById('product-description').value;
-            const previewImage = document.getElementById('product-image').value;
-            const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
-
-            const product = {
-                id,
-                name,
-                price,
-                description,
-                previewImage,
-                additionalImages,
-                onSale: true,
-            };
-
-            products.push(product);
-            localStorage.setItem('products', JSON.stringify(products));
+    // Fetch products from the GitHub JSON file
+    fetch('https://raw.githubusercontent.com/AntiikPoodSalme/AntiikPoodSalme/main/products.json')
+        .then(response => response.json())
+        .then(data => {
+            products = data;
             renderProducts();
-            adminForm.reset();
+        })
+        .catch(error => {
+            console.error('Error fetching the products:', error);
         });
 
-        function renderProducts() {
-            const productList = document.querySelector('.product-list');
-            productList.innerHTML = '';
+    document.getElementById('sign-in').addEventListener('click', () => {
+        const email = prompt('Enter your email:');
+        const password = prompt('Enter your password:');
 
-            products.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
-
-                    productCard.innerHTML = `
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>Price: $${product.price}</p>
-                        <p>ID: ${product.id}</p>
-                        <button onclick="viewProduct('${product.id}')">More Info</button>
-                        ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
-                        ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
-                    `;
-
-                    productList.appendChild(productCard);
-                }
-            });
+        if (email === 'admin@web.com' && password === 'adminpass123') {
+            isAdmin = true;
+            alert('Welcome back, Admin!');
+            document.getElementById('admin-panel').style.display = 'block';
+        } else {
+            alert('You are not an admin.');
         }
+    });
 
-        function editProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
+    const adminForm = document.getElementById('admin-form');
+    adminForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('product-name').value;
+        const price = parseFloat(document.getElementById('product-price').value);
+        const id = document.getElementById('product-id').value;
+        const description = document.getElementById('product-description').value;
+        const previewImage = document.getElementById('product-image').value;
+        const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
 
-            document.getElementById('edit-panel').style.display = 'block';
-            document.getElementById('admin-panel').style.display = 'none';
+        const product = {
+            id,
+            name,
+            price,
+            description,
+            previewImage,
+            additionalImages,
+            onSale: true,
+        };
 
-            document.getElementById('edit-product-name').value = product.name;
-            document.getElementById('edit-product-price').value = product.price;
-            document.getElementById('edit-product-id').value = product.id;
-            document.getElementById('edit-product-description').value = product.description;
-            document.getElementById('edit-product-image').value = product.previewImage;
-            document.getElementById('edit-additional-images').value = product.additionalImages.join(', ');
-
-            document.getElementById('save-changes').onclick = () => {
-                product.name = document.getElementById('edit-product-name').value;
-                product.price = parseFloat(document.getElementById('edit-product-price').value);
-                product.id = document.getElementById('edit-product-id').value;
-                product.description = document.getElementById('edit-product-description').value;
-                product.previewImage = document.getElementById('edit-product-image').value;
-                product.additionalImages = document.getElementById('edit-additional-images').value.split(',').map(img => img.trim());
-
-                localStorage.setItem('products', JSON.stringify(products));
-                document.getElementById('edit-panel').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                renderProducts();
-            };
-        }
-
-        function viewProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-
-            const detailsWindow = window.open('', '_blank');
-            detailsWindow.document.write(`
-                <html>
-                <head>
-                    <title>${product.name}</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 1rem;
-                            background-color: #f4f4f4;
-                        }
-                        .product-details {
-                            max-width: 800px;
-                            margin: auto;
-                            padding: 1rem;
-                            background: white;
-                            border: 1px solid #ddd;
-                            border-radius: 5px;
-                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                            word-wrap: break-word;
-                        }
-                        .product-details img {
-                            max-width: 100%;
-                            height: auto;
-                            margin-bottom: 1rem;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="product-details">
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h1>${product.name}</h1>
-                        <p>Price: $${product.price}</p>
-                        <p>ID: ${product.id}</p>
-                        <p>${product.description}</p>
-                        ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
-                    </div>
-                </body>
-                </html>
-            `);
-            detailsWindow.document.close();
-        }
-
-        function toggleSale(id) {
-            const product = products.find(p => p.id === id);
-            if (product) {
-                product.onSale = !product.onSale;
-                localStorage.setItem('products', JSON.stringify(products));
-                renderProducts();
-            }
-        }
-
+        products.push(product);
+        updateProductsJson(products);
         renderProducts();
+        adminForm.reset();
+    });
 
-        document.getElementById('search-bar').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+    function updateProductsJson(products) {
+        fetch('https://api.github.com/repos/AntiikPoodSalme/AntiikPoodSalme/contents/products.json', {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'token YOUR_GITHUB_PERSONAL_ACCESS_TOKEN', // Replace with your token
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Updated products.json',
+                content: btoa(JSON.stringify(products)), // Base64 encode the updated JSON
+                sha: 'YOUR_FILE_SHA' // You will need to get the SHA of the file from the GitHub API
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Products updated successfully:', data))
+        .catch(error => console.error('Error updating products.json:', error));
+    }
 
-            const productList = document.querySelector('.product-list');
-            productList.innerHTML = '';
+    function renderProducts() {
+        const productList = document.querySelector('.product-list');
+        productList.innerHTML = '';
 
-            filteredProducts.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
+        products.forEach(product => {
+            if (product.onSale) {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
 
-                    productCard.innerHTML = `
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>Price: $${product.price}</p>
-                        <p>ID: ${product.id}</p>
-                        <button onclick="viewProduct('${product.id}')">More Info</button>
-                        ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
-                        ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
-                    `;
+                productCard.innerHTML = `
+                    <img src="${product.previewImage}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p>Price: $${product.price}</p>
+                    <p>ID: ${product.id}</p>
+                    <button onclick="viewProduct('${product.id}')">More Info</button>
+                    ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
+                    ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
+                `;
 
-                    productList.appendChild(productCard);
-                }
-            });
+                productList.appendChild(productCard);
+            }
         });
-    </script>
-</body>
-</html>
+    }
+
+    function editProduct(id) {
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        document.getElementById('edit-panel').style.display = 'block';
+        document.getElementById('admin-panel').style.display = 'none';
+
+        document.getElementById('edit-product-name').value = product.name;
+        document.getElementById('edit-product-price').value = product.price;
+        document.getElementById('edit-product-id').value = product.id;
+        document.getElementById('edit-product-description').value = product.description;
+        document.getElementById('edit-product-image').value = product.previewImage;
+        document.getElementById('edit-additional-images').value = product.additionalImages.join(', ');
+
+        document.getElementById('save-changes').onclick = () => {
+            product.name = document.getElementById('edit-product-name').value;
+            product.price = parseFloat(document.getElementById('edit-product-price').value);
+            product.id = document.getElementById('edit-product-id').value;
+            product.description = document.getElementById('edit-product-description').value;
+            product.previewImage = document.getElementById('edit-product-image').value;
+            product.additionalImages = document.getElementById('edit-additional-images').value.split(',').map(img => img.trim());
+
+            updateProductsJson(products);
+            document.getElementById('edit-panel').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            renderProducts();
+        };
+    }
+
+    function viewProduct(id) {
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        const detailsWindow = window.open('', '_blank');
+        detailsWindow.document.write(`
+            <html>
+            <head>
+                <title>${product.name}</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 1rem;
+                        background-color: #f4f4f4;
+                    }
+                    .product-details {
+                        max-width: 800px;
+                        margin: auto;
+                        padding: 1rem;
+                        background: white;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                        word-wrap: break-word;
+                    }
+                    .product-details img {
+                        max-width: 100%;
+                        height: auto;
+                        margin-bottom: 1rem;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="product-details">
+                    <img src="${product.previewImage}" alt="${product.name}">
+                    <h1>${product.name}</h1>
+                    <p>Price: $${product.price}</p>
+                    <p>ID: ${product.id}</p>
+                    <p>${product.description}</p>
+                    ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
+                </div>
+            </body>
+            </html>
+        `);
+        detailsWindow.document.close();
+    }
+
+    function toggleSale(id) {
+        const product = products.find(p => p.id === id);
+        if (product) {
+            product.onSale = !product.onSale;
+            updateProductsJson(products);
+            renderProducts();
+        }
+    }
+
+    document.getElementById('search-bar').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+
+        const productList = document.querySelector('.product-list');
+        productList.innerHTML = '';
+
+        filteredProducts.forEach(product => {
+            if (product.onSale) {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+
+                productCard.innerHTML = `
+                    <img src="${product.previewImage}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p>Price: $${product.price}</p>
+                    <p>ID: ${product.id}</p>
+                    <button onclick="viewProduct('${product.id}')">More Info</button>
+                    ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
+                    ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
+                `;
+
+                productList.appendChild(productCard);
+            }
+        });
+    });
+</script>
