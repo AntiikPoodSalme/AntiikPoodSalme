@@ -1,209 +1,238 @@
-<script>
-    let products = [];
-    let isAdmin = false;
-
-    // Fetch products from the GitHub JSON file
-    fetch('https://raw.githubusercontent.com/AntiikPoodSalme/AntiikPoodSalme/main/products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            renderProducts();
-        })
-        .catch(error => {
-            console.error('Error fetching the products:', error);
-        });
-
-    document.getElementById('sign-in').addEventListener('click', () => {
-        const email = prompt('Enter your email:');
-        const password = prompt('Enter your password:');
-
-        if (email === 'admin@web.com' && password === 'adminpass123') {
-            isAdmin = true;
-            alert('Welcome back, Admin!');
-            document.getElementById('admin-panel').style.display = 'block';
-        } else {
-            alert('You are not an admin.');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-    });
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        .search-bar {
+            margin: 1rem auto;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 0.5rem;
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem;
+        }
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 1rem;
+            word-wrap: break-word;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+        .product-card p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 3em;
+            line-height: 1.5em;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: white;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+        footer img {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Shop</h1>
+        <nav>
+            <a href="#" id="sign-in">Sign In</a>
+        </nav>
+    </header>
 
-    const adminForm = document.getElementById('admin-form');
-    adminForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('product-name').value;
-        const price = parseFloat(document.getElementById('product-price').value);
-        const id = document.getElementById('product-id').value;
-        const description = document.getElementById('product-description').value;
-        const previewImage = document.getElementById('product-image').value;
-        const additionalImages = document.getElementById('additional-images').value.split(',').map(img => img.trim());
+    <div class="search-bar">
+        <input type="text" id="search-bar" placeholder="Search products...">
+    </div>
 
-        const product = {
-            id,
-            name,
-            price,
-            description,
-            previewImage,
-            additionalImages,
-            onSale: true,
-        };
+    <div class="product-list">
+        <!-- Product cards will be dynamically generated here -->
+    </div>
 
-        products.push(product);
-        updateProductsJson(products);
-        renderProducts();
-        adminForm.reset();
-    });
+    <footer>
+        <p>Contact us at <a href="mailto:support@myshop.com">support@myshop.com</a></p>
+        <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
+            <img src="Images/youtube-icon.png" alt="YouTube">
+        </a>
+        <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
+            <img src="Images/tiktok-icon.png" alt="TikTok">
+        </a>
+    </footer>
 
-    function updateProductsJson(products) {
-        fetch('https://api.github.com/repos/AntiikPoodSalme/AntiikPoodSalme/contents/products.json', {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'token YOUR_GITHUB_PERSONAL_ACCESS_TOKEN', // Replace with your token
-                'Content-Type': 'application/json'
+    <script>
+        // Manual product list
+        let products = [
+            {
+                id: '1',
+                name: 'Product 1',
+                price: 25.99,
+                description: 'This is a description for Product 1.',
+                previewImage: 'https://via.placeholder.com/200',
+                additionalImages: ['https://via.placeholder.com/200', 'https://via.placeholder.com/200'],
+                onSale: true,
             },
-            body: JSON.stringify({
-                message: 'Updated products.json',
-                content: btoa(JSON.stringify(products)), // Base64 encode the updated JSON
-                sha: 'YOUR_FILE_SHA' // You will need to get the SHA of the file from the GitHub API
-            })
-        })
-        .then(response => response.json())
-        .then(data => console.log('Products updated successfully:', data))
-        .catch(error => console.error('Error updating products.json:', error));
-    }
-
-    function renderProducts() {
-        const productList = document.querySelector('.product-list');
-        productList.innerHTML = '';
-
-        products.forEach(product => {
-            if (product.onSale) {
-                const productCard = document.createElement('div');
-                productCard.classList.add('product-card');
-
-                productCard.innerHTML = `
-                    <img src="${product.previewImage}" alt="${product.name}">
-                    <h2>${product.name}</h2>
-                    <p>Price: $${product.price}</p>
-                    <p>ID: ${product.id}</p>
-                    <button onclick="viewProduct('${product.id}')">More Info</button>
-                    ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
-                    ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
-                `;
-
-                productList.appendChild(productCard);
+            {
+                id: '2',
+                name: 'Product 2',
+                price: 19.99,
+                description: 'This is a description for Product 2.',
+                previewImage: 'https://via.placeholder.com/200',
+                additionalImages: ['https://via.placeholder.com/200', 'https://via.placeholder.com/200'],
+                onSale: true,
             }
-        });
-    }
+            // Add more products here
+        ];
 
-    function editProduct(id) {
-        const product = products.find(p => p.id === id);
-        if (!product) return;
+        function renderProducts() {
+            const productList = document.querySelector('.product-list');
+            productList.innerHTML = '';
 
-        document.getElementById('edit-panel').style.display = 'block';
-        document.getElementById('admin-panel').style.display = 'none';
+            products.forEach(product => {
+                if (product.onSale) {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
 
-        document.getElementById('edit-product-name').value = product.name;
-        document.getElementById('edit-product-price').value = product.price;
-        document.getElementById('edit-product-id').value = product.id;
-        document.getElementById('edit-product-description').value = product.description;
-        document.getElementById('edit-product-image').value = product.previewImage;
-        document.getElementById('edit-additional-images').value = product.additionalImages.join(', ');
+                    productCard.innerHTML = `
+                        <img src="${product.previewImage}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>Price: $${product.price}</p>
+                        <p>ID: ${product.id}</p>
+                        <button onclick="viewProduct('${product.id}')">More Info</button>
+                    `;
 
-        document.getElementById('save-changes').onclick = () => {
-            product.name = document.getElementById('edit-product-name').value;
-            product.price = parseFloat(document.getElementById('edit-product-price').value);
-            product.id = document.getElementById('edit-product-id').value;
-            product.description = document.getElementById('edit-product-description').value;
-            product.previewImage = document.getElementById('edit-product-image').value;
-            product.additionalImages = document.getElementById('edit-additional-images').value.split(',').map(img => img.trim());
-
-            updateProductsJson(products);
-            document.getElementById('edit-panel').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
-            renderProducts();
-        };
-    }
-
-    function viewProduct(id) {
-        const product = products.find(p => p.id === id);
-        if (!product) return;
-
-        const detailsWindow = window.open('', '_blank');
-        detailsWindow.document.write(`
-            <html>
-            <head>
-                <title>${product.name}</title>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 0;
-                        padding: 1rem;
-                        background-color: #f4f4f4;
-                    }
-                    .product-details {
-                        max-width: 800px;
-                        margin: auto;
-                        padding: 1rem;
-                        background: white;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                        word-wrap: break-word;
-                    }
-                    .product-details img {
-                        max-width: 100%;
-                        height: auto;
-                        margin-bottom: 1rem;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="product-details">
-                    <img src="${product.previewImage}" alt="${product.name}">
-                    <h1>${product.name}</h1>
-                    <p>Price: $${product.price}</p>
-                    <p>ID: ${product.id}</p>
-                    <p>${product.description}</p>
-                    ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
-                </div>
-            </body>
-            </html>
-        `);
-        detailsWindow.document.close();
-    }
-
-    function toggleSale(id) {
-        const product = products.find(p => p.id === id);
-        if (product) {
-            product.onSale = !product.onSale;
-            updateProductsJson(products);
-            renderProducts();
+                    productList.appendChild(productCard);
+                }
+            });
         }
-    }
 
-    document.getElementById('search-bar').addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+        function viewProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
 
-        const productList = document.querySelector('.product-list');
-        productList.innerHTML = '';
+            const detailsWindow = window.open('', '_blank');
+            detailsWindow.document.write(`
+                <html>
+                <head>
+                    <title>${product.name}</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 1rem;
+                            background-color: #f4f4f4;
+                        }
+                        .product-details {
+                            max-width: 800px;
+                            margin: auto;
+                            padding: 1rem;
+                            background: white;
+                            border: 1px solid #ddd;
+                            border-radius: 5px;
+                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                            word-wrap: break-word;
+                        }
+                        .product-details img {
+                            max-width: 100%;
+                            height: auto;
+                            margin-bottom: 1rem;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="product-details">
+                        <img src="${product.previewImage}" alt="${product.name}">
+                        <h1>${product.name}</h1>
+                        <p>Price: $${product.price}</p>
+                        <p>ID: ${product.id}</p>
+                        <p>${product.description}</p>
+                        ${product.additionalImages.map(img => `<img src="${img}" alt="Additional image">`).join('')}
+                    </div>
+                </body>
+                </html>
+            `);
+            detailsWindow.document.close();
+        }
 
-        filteredProducts.forEach(product => {
-            if (product.onSale) {
-                const productCard = document.createElement('div');
-                productCard.classList.add('product-card');
+        document.getElementById('search-bar').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
 
-                productCard.innerHTML = `
-                    <img src="${product.previewImage}" alt="${product.name}">
-                    <h2>${product.name}</h2>
-                    <p>Price: $${product.price}</p>
-                    <p>ID: ${product.id}</p>
-                    <button onclick="viewProduct('${product.id}')">More Info</button>
-                    ${isAdmin ? `<button onclick="editProduct('${product.id}')">Edit</button>` : ''}
-                    ${isAdmin ? `<button onclick="toggleSale('${product.id}')">Remove from Sale</button>` : ''}
-                `;
+            const productList = document.querySelector('.product-list');
+            productList.innerHTML = '';
 
-                productList.appendChild(productCard);
-            }
+            filteredProducts.forEach(product => {
+                if (product.onSale) {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
+
+                    productCard.innerHTML = `
+                        <img src="${product.previewImage}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>Price: $${product.price}</p>
+                        <p>ID: ${product.id}</p>
+                        <button onclick="viewProduct('${product.id}')">More Info</button>
+                    `;
+
+                    productList.appendChild(productCard);
+                }
+            });
         });
-    });
-</script>
+
+        renderProducts(); // Initial product rendering
+    </script>
+</body>
+</html>
