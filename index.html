@@ -85,13 +85,45 @@
             height: 24px;
             cursor: pointer;
         }
+        .buy-panel {
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .buy-panel h2 {
+            text-align: center;
+        }
+        .buy-panel form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .buy-panel input, .buy-panel textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .buy-panel button {
+            padding: 0.5rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>My Shop</h1>
         <nav>
-            <a href="#" id="sign-in">Sign In</a>
+            <a href="#" id="buy-button">Buy</a>
         </nav>
     </header>
 
@@ -113,58 +145,76 @@
         </a>
     </footer>
 
+    <section class="buy-panel" id="buy-panel">
+        <h2>Buy Products</h2>
+        <form id="buy-form">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <label for="email">Your Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="product-ids">Product IDs (comma separated)</label>
+            <input type="text" id="product-ids" placeholder="Enter product IDs" required>
+
+            <button type="submit">Send</button>
+        </form>
+        <p id="error-message" style="color: red; display: none;">Invalid Product ID(s) entered. Please check and try again.</p>
+    </section>
+
     <script>
-        // Manual product list
-        let products = [
-            {
-                id: '1',
-                name: 'Product 1',
-                price: 25.99,
-                description: 'This is a description for Product 1.',
-                previewImage: 'https://via.placeholder.com/200',
-                additionalImages: ['https://via.placeholder.com/200', 'https://via.placeholder.com/200'],
-                onSale: true,
-            },
-            {
-                id: '2',
-                name: 'Product 2',
-                price: 19.99,
-                description: 'This is a description for Product 2.',
-                previewImage: 'https://via.placeholder.com/200',
-                additionalImages: ['https://via.placeholder.com/200', 'https://via.placeholder.com/200'],
-                onSale: true,
-            },
-            {
-                id: '202501111',
-                name: 'a book',
-                price: 25.99,
-                description: 'This is a description for Product 1.',
-                previewImage: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.primeclassicdesign.com%2Fimages%2Fleather-sectionals-sofas%2Frecliner-sofa-with-chaise-angled-sectional-italy-alpa-roxanne.jpg&f=1&nofb=1&ipt=29327b108f0c28f6073884cb983a2fc83d35ba5c7c058240ace64ebe9a475c4b&ipo=images',
-                additionalImages: ['https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.primeclassicdesign.com%2Fimages%2Fleather-sectionals-sofas%2Frecliner-sofa-with-chaise-angled-sectional-italy-alpa-roxanne.jpg&f=1&nofb=1&ipt=29327b108f0c28f6073884cb983a2fc83d35ba5c7c058240ace64ebe9a475c4b&ipo=images', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.primeclassicdesign.com%2Fimages%2Fleather-sectionals-sofas%2Frecliner-sofa-with-chaise-angled-sectional-italy-alpa-roxanne.jpg&f=1&nofb=1&ipt=29327b108f0c28f6073884cb983a2fc83d35ba5c7c058240ace64ebe9a475c4b&ipo=images'],
-                onSale: true,
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+
+        document.getElementById('buy-button').addEventListener('click', () => {
+            document.getElementById('buy-panel').style.display = 'block';
+        });
+
+        document.getElementById('buy-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const productIdsInput = document.getElementById('product-ids').value;
+            const productIds = productIdsInput.split(',').map(id => id.trim());
+            const invalidIds = [];
+
+            productIds.forEach(id => {
+                if (!products.some(product => product.id === id)) {
+                    invalidIds.push(id);
+                }
+            });
+
+            if (invalidIds.length > 0) {
+                document.getElementById('error-message').style.display = 'block';
+                return;
             }
-            // Add more products here
-        ];
+
+            document.getElementById('error-message').style.display = 'none';
+
+            // Here you would call a backend API to send the email.
+            // This is just an alert for simulation.
+            alert(`Email sent with the following details:\nName: ${name}\nEmail: ${email}\nProduct IDs: ${productIds.join(', ')}`);
+
+            // Clear the form
+            document.getElementById('buy-form').reset();
+        });
 
         function renderProducts() {
             const productList = document.querySelector('.product-list');
             productList.innerHTML = '';
 
             products.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
 
-                    productCard.innerHTML = `
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>Price: $${product.price}</p>
-                        <p>ID: ${product.id}</p>
-                        <button onclick="viewProduct('${product.id}')">More Info</button>
-                    `;
+                productCard.innerHTML = `
+                    <img src="${product.previewImage}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p>Price: $${product.price}</p>
+                    <p>ID: ${product.id}</p>
+                    <button onclick="viewProduct('${product.id}')">More Info</button>
+                `;
 
-                    productList.appendChild(productCard);
-                }
+                productList.appendChild(productCard);
             });
         }
 
@@ -216,32 +266,7 @@
             detailsWindow.document.close();
         }
 
-        document.getElementById('search-bar').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
-
-            const productList = document.querySelector('.product-list');
-            productList.innerHTML = '';
-
-            filteredProducts.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
-
-                    productCard.innerHTML = `
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>Price: $${product.price}</p>
-                        <p>ID: ${product.id}</p>
-                        <button onclick="viewProduct('${product.id}')">More Info</button>
-                    `;
-
-                    productList.appendChild(productCard);
-                }
-            });
-        });
-
-        renderProducts(); // Initial product rendering
+        renderProducts();
     </script>
 </body>
 </html>
