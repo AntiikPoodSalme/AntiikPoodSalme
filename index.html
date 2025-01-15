@@ -21,39 +21,21 @@
       margin: 0;
       font-size: calc(1.5rem + 1vw); /* Responsive font size */
     }
-    .how-to-buy-btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      background-color: #09a33c;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .how-to-buy-btn:hover {
-      background-color: #007a2b;
-    }
-    @media screen and (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      .how-to-buy-btn {
-        display: block;
-        margin: 1rem auto;
-        text-align: center;
-      }
-    }
-    .search-bar {
-      margin: 1rem auto;
+    .main-content {
       text-align: center;
+      margin-top: 2rem;
     }
-    .search-bar input {
-      padding: 0.5rem;
-      width: 80%;
-      max-width: 500px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
+    .main-content p {
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .main-content a {
+      color: #09a33c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .main-content a:hover {
+      text-decoration: underline;
     }
     .product-list {
       display: flex;
@@ -96,7 +78,10 @@
     footer a:hover {
       text-decoration: underline;
     }
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
       footer {
         font-size: 1rem;
         padding: 1rem;
@@ -107,23 +92,36 @@
 <body>
   <header>
     <h1>AntiikPoodSalme</h1>
-    <a href="#" class="how-to-buy-btn" id="how-to-buy">How To Buy</a>
   </header>
-  <div class="search-bar">
-    <input type="text" id="search-bar" placeholder="Search by name or ID...">
+
+  <div class="main-content">
+    <p>To Buy</p>
+    <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
+    <div>
+      <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
+        <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px; margin: 0 5px;">
+      </a>
+      <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
+        <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px; margin: 0 5px;">
+      </a>
+    </div>
   </div>
+
   <div class="product-list">
     <!-- Product cards will be dynamically generated here -->
   </div>
+
   <footer>
-    <p><strong>How To Buy</strong></p>
+    <p><strong>To Buy</strong></p>
     <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
-    <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-      <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px;">
-    </a>
-    <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-      <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px;">
-    </a>
+    <div>
+      <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
+        <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px; margin: 0 5px;">
+      </a>
+      <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
+        <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px; margin: 0 5px;">
+      </a>
+    </div>
   </footer>
 
   <script>
@@ -151,26 +149,6 @@
         }
       });
     }
-
-    document.getElementById('how-to-buy').addEventListener('click', () => {
-      const buyPage = window.open('', '_blank');
-      buyPage.document.write(`
-        <html>
-          <head><title>How To Buy</title>
-            <style>
-              body {font-family: Arial, sans-serif; margin: 0; padding: 2rem; text-align: center; background-color: #f4f4f4; font-size: calc(1.5rem + 1vw);}
-              a {color: #09a33c; text-decoration: none; font-weight: bold; font-size: 1.2rem;}
-              a:hover {text-decoration: underline;}
-            </style>
-          </head>
-          <body>
-            <h1>How To Buy</h1>
-            <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
-          </body>
-        </html>
-      `);
-      buyPage.document.close();
-    });
 
     renderProducts();
   </script>
