@@ -19,10 +19,15 @@
             justify-content: space-between;
             align-items: center;
         }
-        header a {
+        header h1 {
+            margin: 0;
+            font-size: calc(1.5rem + 1vw); /* Responsive font size */
+        }
+        header nav a {
             color: white;
             text-decoration: none;
-            margin: 0 1rem;
+            margin-left: 1rem;
+            font-size: 1rem;
         }
         .search-bar {
             margin: 1rem auto;
@@ -58,19 +63,19 @@
             border-bottom: 1px solid #ddd;
             margin-bottom: 1rem;
         }
+        .product-card p {
+            margin: 0.5rem 0;
+        }
         footer {
             text-align: center;
             padding: 1rem;
             background: #333;
             color: white;
-            margin-top: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+            flex-wrap: wrap; /* Ensures layout is responsive */
         }
         footer a {
             color: white;
@@ -80,6 +85,32 @@
             width: 24px;
             height: 24px;
             cursor: pointer;
+        }
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            header nav a {
+                font-size: 0.9rem;
+            }
+            .product-card {
+                width: 150px;
+            }
+            footer {
+                font-size: 0.9rem;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+            header nav a {
+                font-size: 0.8rem;
+            }
+            footer {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -100,7 +131,7 @@
     </div>
 
     <footer>
-        <p>Contact me at <a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
+        <p>How To Buy <a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
         <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
             <img src="Images/youtube-icon.png" alt="YouTube">
         </a>
@@ -162,32 +193,6 @@
             });
         }
 
-        document.getElementById('search-bar').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => 
-                product.name.toLowerCase().includes(query) || product.id.toLowerCase().includes(query)
-            );
-
-            const productList = document.querySelector('.product-list');
-            productList.innerHTML = '';
-
-            filteredProducts.forEach(product => {
-                if (product.onSale) {
-                    const productCard = document.createElement('div');
-                    productCard.classList.add('product-card');
-
-                    productCard.innerHTML = `
-                        <img src="${product.previewImage}" alt="${product.name}">
-                        <h2>${product.name}</h2>
-                        <p>Price: €${product.price}</p>
-                        <p>ID: ${product.id}</p>
-                    `;
-
-                    productList.appendChild(productCard);
-                }
-            });
-        });
-
         document.getElementById('how-to-buy').addEventListener('click', () => {
             const buyPage = window.open('', '_blank');
             buyPage.document.write(`
@@ -198,33 +203,23 @@
                         body {
                             font-family: Arial, sans-serif;
                             margin: 0;
-                            padding: 1rem;
-                            background-color: #f4f4f4;
-                        }
-                        .buy-info {
-                            max-width: 800px;
-                            margin: auto;
-                            padding: 1rem;
-                            background: white;
-                            border: 1px solid #ddd;
-                            border-radius: 5px;
-                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                            padding: 2rem;
                             text-align: center;
+                            background-color: #f4f4f4;
+                            font-size: 1.5rem;
                         }
                     </style>
                 </head>
                 <body>
-                    <div class="buy-info">
-                        <h1>How To Buy</h1>
-                        <p>Contact me at <a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
-                    </div>
+                    <h1>How To Buy</h1>
+                    <p>ContactAntiikPoodSalme@gmail.com</p>
                 </body>
                 </html>
             `);
             buyPage.document.close();
         });
 
-        renderProducts(); // Initial product rendering
+        renderProducts();
     </script>
 </body>
 </html>
