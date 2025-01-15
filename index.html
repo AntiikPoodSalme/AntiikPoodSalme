@@ -15,34 +15,14 @@
             background-color: #333;
             color: white;
             padding: 1rem 2rem;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        header h1 {
-            margin: 0;
-            font-size: calc(1.5rem + 1vw); /* Responsive font size */
-        }
-        .how-to-buy-btn {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.5rem 1rem;
-            background-color: #09a33c;
+        header a {
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .how-to-buy-btn:hover {
-            background-color: #007a2b;
-        }
-        @media screen and (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            .how-to-buy-btn {
-                display: block;
-                margin: 1rem auto;
-                text-align: center;
-            }
+            margin: 0 1rem;
         }
         .search-bar {
             margin: 1rem auto;
@@ -70,44 +50,98 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 1rem;
+            word-wrap: break-word;
         }
         .product-card img {
-            width: 100%; /* Fixed the image size */
+            max-width: 100%;
             height: auto;
             border-bottom: 1px solid #ddd;
             margin-bottom: 1rem;
         }
+        .product-card p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 3em;
+            line-height: 1.5em;
+        }
         footer {
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 1rem;
             background: #333;
             color: white;
-            font-size: 1.2rem;
-        }
-        footer p {
-            margin: 0.5rem 0;
-            line-height: 1.5;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
         footer a {
+            color: white;
+            text-decoration: none;
+        }
+        footer img {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        footer p {
+            font-size: calc(1rem + 1vw); /* Responsive font size for footer */
+        }
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: calc(1.5rem + 1vw); /* Smaller title on mobile */
+            }
+            .search-bar input {
+                width: 90%;
+            }
+            footer {
+                flex-direction: column;
+            }
+            footer p {
+                font-size: calc(1rem + 2vw); /* Larger text in footer for mobile */
+                margin-bottom: 1rem;
+            }
+        }
+        /* How To Buy Page */
+        .how-to-buy-container {
+            text-align: center;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .how-to-buy-container h1 {
+            font-size: calc(2rem + 2vw);
+            margin-bottom: 1rem;
+        }
+        .how-to-buy-container p {
+            font-size: calc(1rem + 1vw);
+            color: #333;
+        }
+        .how-to-buy-container a {
             color: #09a33c;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1.2rem;
         }
-        footer a:hover {
+        .how-to-buy-container a:hover {
             text-decoration: underline;
-        }
-        @media screen and (max-width: 480px) {
-            footer {
-                font-size: 1rem;
-                padding: 1rem;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Main Page -->
     <header>
         <h1>AntiikPoodSalme</h1>
-        <a href="#" class="how-to-buy-btn" id="how-to-buy">How To Buy</a>
+        <nav>
+            <a href="#how-to-buy-page">How To Buy</a>
+        </nav>
     </header>
 
     <div class="search-bar">
@@ -119,17 +153,27 @@
     </div>
 
     <footer>
-        <p><strong>How To Buy</strong></p>
-        <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
+        <p>How To Buy <a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
         <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-            <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px;">
+            <img src="Images/youtube-icon.png" alt="YouTube">
         </a>
         <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-            <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px;">
+            <img src="Images/tiktok-icon.png" alt="TikTok">
         </a>
     </footer>
 
+    <!-- How To Buy Page (Initially Hidden) -->
+    <div id="how-to-buy-page" style="display:none;">
+        <div class="how-to-buy-container">
+            <div>
+                <h1>How To Buy</h1>
+                <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Manual product list
         let products = [
             {
                 id: '202501150',
@@ -182,41 +226,17 @@
             });
         }
 
-        document.getElementById('how-to-buy').addEventListener('click', () => {
-            const buyPage = window.open('', '_blank');
-            buyPage.document.write(`
-                <html>
-                <head>
-                    <title>How To Buy</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 2rem;
-                            text-align: center;
-                            background-color: #f4f4f4;
-                            font-size: calc(1.5rem + 1vw); /* Matches header size */
-                        }
-                        a {
-                            color: #09a33c;
-                            text-decoration: none;
-                            font-weight: bold;
-                        }
-                        a:hover {
-                            text-decoration: underline;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>How To Buy</h1>
-                    <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
-                </body>
-                </html>
-            `);
-            buyPage.document.close();
-        });
+        renderProducts(); // Initial product rendering
 
-        renderProducts();
+        // Function to switch between pages
+        const howToBuyLink = document.querySelector('a[href="#how-to-buy-page"]');
+        howToBuyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('footer').style.display = 'none';
+            document.querySelector('.search-bar').style.display = 'none';
+            document.querySelector('.product-list').style.display = 'none';
+            document.getElementById('how-to-buy-page').style.display = 'block';
+        });
     </script>
 </body>
 </html>
