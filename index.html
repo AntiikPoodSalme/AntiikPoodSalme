@@ -15,19 +15,34 @@
             background-color: #333;
             color: white;
             padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
         }
         header h1 {
             margin: 0;
             font-size: calc(1.5rem + 1vw); /* Responsive font size */
         }
-        header nav a {
+        .how-to-buy-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #09a33c;
             color: white;
             text-decoration: none;
-            margin-left: 1rem;
+            border-radius: 5px;
             font-size: 1rem;
+        }
+        .how-to-buy-btn:hover {
+            background-color: #007a2b;
+        }
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .how-to-buy-btn {
+                display: block;
+                margin: 1rem auto;
+                text-align: center;
+            }
         }
         .search-bar {
             margin: 1rem auto;
@@ -56,12 +71,6 @@
             text-align: center;
             padding: 1rem;
         }
-        .product-card img {
-            max-width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 1rem;
-        }
         footer {
             text-align: center;
             padding: 2rem 1rem;
@@ -81,14 +90,9 @@
         footer a:hover {
             text-decoration: underline;
         }
-        @media screen and (max-width: 768px) {
-            footer {
-                font-size: 1rem;
-            }
-        }
         @media screen and (max-width: 480px) {
             footer {
-                font-size: 0.9rem;
+                font-size: 1rem;
                 padding: 1rem;
             }
         }
@@ -97,9 +101,7 @@
 <body>
     <header>
         <h1>AntiikPoodSalme</h1>
-        <nav>
-            <a href="#" id="how-to-buy">How To Buy</a>
-        </nav>
+        <a href="#" class="how-to-buy-btn" id="how-to-buy">How To Buy</a>
     </header>
 
     <div class="search-bar">
@@ -187,7 +189,7 @@
                             padding: 2rem;
                             text-align: center;
                             background-color: #f4f4f4;
-                            font-size: 1.5rem;
+                            font-size: calc(1.5rem + 1vw); /* Matches header size */
                         }
                         a {
                             color: #ffcc00;
