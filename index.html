@@ -55,7 +55,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 1rem;
-            word-wrap: break-word;
         }
         .product-card img {
             max-width: 100%;
@@ -63,53 +62,34 @@
             border-bottom: 1px solid #ddd;
             margin-bottom: 1rem;
         }
-        .product-card p {
-            margin: 0.5rem 0;
-        }
         footer {
             text-align: center;
-            padding: 1rem;
+            padding: 2rem 1rem;
             background: #333;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap; /* Ensures layout is responsive */
+            font-size: 1.2rem;
+        }
+        footer p {
+            margin: 0.5rem 0;
+            line-height: 1.5;
         }
         footer a {
-            color: white;
+            color: #ffcc00;
             text-decoration: none;
+            font-weight: bold;
         }
-        footer img {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
+        footer a:hover {
+            text-decoration: underline;
         }
         @media screen and (max-width: 768px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-            header nav a {
-                font-size: 0.9rem;
-            }
-            .product-card {
-                width: 150px;
-            }
             footer {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
         }
         @media screen and (max-width: 480px) {
-            header h1 {
-                font-size: 1.2rem;
-            }
-            header nav a {
-                font-size: 0.8rem;
-            }
             footer {
-                font-size: 0.8rem;
-                padding: 0.5rem;
+                font-size: 0.9rem;
+                padding: 1rem;
             }
         }
     </style>
@@ -131,12 +111,13 @@
     </div>
 
     <footer>
-        <p>How To Buy <a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
+        <p><strong>How To Buy</strong></p>
+        <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
         <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-            <img src="Images/youtube-icon.png" alt="YouTube">
+            <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px;">
         </a>
         <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-            <img src="Images/tiktok-icon.png" alt="TikTok">
+            <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px;">
         </a>
     </footer>
 
@@ -208,11 +189,19 @@
                             background-color: #f4f4f4;
                             font-size: 1.5rem;
                         }
+                        a {
+                            color: #ffcc00;
+                            text-decoration: none;
+                            font-weight: bold;
+                        }
+                        a:hover {
+                            text-decoration: underline;
+                        }
                     </style>
                 </head>
                 <body>
                     <h1>How To Buy</h1>
-                    <p>ContactAntiikPoodSalme@gmail.com</p>
+                    <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
                 </body>
                 </html>
             `);
