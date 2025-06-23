@@ -4,309 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AntiikPoodSalme</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      padding: 1rem 2rem;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: calc(1.5rem + 1vw); /* Responsive font size */
-    }
-    .main-content {
-      text-align: center;
-      margin-top: 2rem;
-    }
-    .main-content p {
-      font-size: 1.2rem;
-      color: #333;
-    }
-    .main-content a {
-      color: #09a33c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .main-content a:hover {
-      text-decoration: underline;
-    }
-    .product-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin: 2rem;
-    }
-    .product-card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      width: 200px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      padding: 1rem;
-    }
-    .product-card img {
-      width: 100%; /* Fixed the image size */
-      height: auto;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 1rem;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: #333;
-      color: white;
-      font-size: 1.2rem;
-    }
-    footer p {
-      margin: 0.5rem 0;
-      line-height: 1.5;
-    }
-    footer a {
-      color: #09a33c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-    @media screen and (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      footer {
-        font-size: 1rem;
-        padding: 1rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>AntiikPoodSalme</h1>
   </header>
 
-  <div class="main-content">
-    <p>To Buy</p>
-    <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
-    <div>
-      <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-        <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px; margin: 0 5px;">
+  <div class="top-bar">
+    <div class="contact-info">
+      <span class="contact-item"><i class="fas fa-phone"></i> +372 5559 0322</span>
+      <a href="mailto:AntiikPoodSalme@gmail.com" class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <span class="email-text">AntiikPoodSalme@gmail.com</span>
       </a>
-      <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-        <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px; margin: 0 5px;">
-      </a>
+    </div>
+    <div class="social-icons">
+      <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     </div>
   </div>
 
-  <div class="product-list">
-    <!-- Product cards will be dynamically generated here -->
+  <div class="main-content-wrapper">
+    <div class="filter-search-container">
+      <div class="search-bar-wrapper">
+        <input type="text" id="searchInput" placeholder="Search products..." aria-label="Search products">
+      </div>
+      <div class="filter-controls">
+        <div id="tagFilter1-container" class="custom-dropdown-container"></div>
+        <div id="tagFilter2-container" class="custom-dropdown-container"></div>
+        <button id="resetFiltersBtn">Reset</button>
+      </div>
+    </div>
+
+    <div id="productListWrapper">
+      <div class="product-list"></div>
+      <div id="loadMoreTrigger"></div>
+    </div>
+
   </div>
 
-  <footer>
-    <p><strong>To Buy</strong></p>
-    <p><a href="mailto:ContactAntiikPoodSalme@gmail.com">ContactAntiikPoodSalme@gmail.com</a></p>
-    <div>
-      <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank">
-        <img src="Images/youtube-icon.png" alt="YouTube" style="width: 32px; height: 32px; margin: 0 5px;">
+  <footer class="top-bar">
+    <div class="contact-info">
+      <span class="contact-item"><i class="fas fa-phone"></i> +372 5559 0322</span>
+      <a href="mailto:AntiikPoodSalme@gmail.com" class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <span class="email-text">AntiikPoodSalme@gmail.com</span>
       </a>
-      <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank">
-        <img src="Images/tiktok-icon.png" alt="TikTok" style="width: 32px; height: 32px; margin: 0 5px;">
-      </a>
+    </div>
+    <div class="social-icons">
+      <a href="https://www.youtube.com/@AntiikPoodSalme" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.tiktok.com/@antiikpoodsalme" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     </div>
   </footer>
 
-  <script>
-let products = [
-{id: '202501150', name: 'Cigarette Case Silver', price: 288, previewImage: 'https://i.ibb.co/gPbfvDp/IMG-20250115-142412.jpg', onSale: true},
-{id: '202501151', name: 'Cigarette Holder Silver', price: 16, previewImage: 'https://i.ibb.co/18d6bfx/IMG-20250115-142620.jpg', onSale: true},
-{id: '202501152', name: 'Silver Ash Tray', price: 30, previewImage: 'https://i.ibb.co/THXf9vk/IMG-20250115-142634.jpg', onSale: true},
-{id: '202501153', name: 'Silver Ash Tray', price: 28, previewImage: 'https://i.ibb.co/n78D7S7/IMG-20250115-142712.jpg', onSale: true},
-{id: '202501170', name: 'Matchstick Holder Silver', price: 95, previewImage: 'https://i.ibb.co/QCN1LHY/IMG-20250117-153720.jpg', onSale: true},
-{id: '202501171', name: 'Pen Holder Silver', price: 22, previewImage: 'https://i.ibb.co/2WqQzG4/IMG-20250117-154526.jpg', onSale: true},
-{id: '202501174', name: 'Cross Pencil s925 Silver', price: 100, previewImage: 'https://i.ibb.co/4Kyw8SR/IMG-20250117-161213.jpg', onSale: true},
-{id: '202501220', name: 'Tie Holder Silver', price: 10, previewImage: 'https://i.ibb.co/5R2LZxh/IMG-20250117-155333.jpg', onSale: true},
-{id: '202501221', name: 'Tie Holder Silver', price: 10, previewImage: 'https://i.ibb.co/JvTps9p/202501221.jpg', onSale: true},
-{id: '202501222', name: 'Tie Holder Silver', price: 14, previewImage: 'https://i.ibb.co/268hVxc/202501222.jpg', onSale: true},
-{id: '202501223', name: 'Tie Holder Silver', price: 14, previewImage: 'https://i.ibb.co/K7yn5Y1/202501223.jpg', onSale: true},
-{id: '202501224', name: 'Pipes Silver Details', price: 60, previewImage: 'https://i.ibb.co/PjvSVdT/202501224.jpg', onSale: true},
-{id: '202501225', name: 'Silver Coaster', price: 18, previewImage: 'https://i.ibb.co/dbSxPsb/202501225.jpg', onSale: true},
-{id: '202501226', name: 'Silver Ash Tray', price: 22, previewImage: 'https://i.ibb.co/VMBpV2P/202501226.jpg', onSale: true},
-{id: '202501227', name: 'Silver Ash Tray', price: 22, previewImage: 'https://i.ibb.co/kxfyLQK/202501227.jpg', onSale: true},
-{id: '202501228', name: 'Silver Ash Tray', price: 34, previewImage: 'https://i.ibb.co/Gc5pNpS/202501228.jpg', onSale: true},
-{id: '202501229', name: 'Silver Ash Tray', price: 38, previewImage: 'https://i.ibb.co/0JcfWS5/202501229.jpg', onSale: true},
-{id: '2025012210', name: 'Silver Ash Tray', price: 30, previewImage: 'https://i.ibb.co/Y7Jw4kc/2025012210.jpg', onSale: true},
-{id: '2025012211', name: 'Silver Dollar Necklace', price: 26, previewImage: 'https://i.ibb.co/RTmD0HW/2025012211.jpg', onSale: true},
-{id: '2025012212', name: 'Silver Ash Tray', price: 106, previewImage: 'https://i.ibb.co/qWKknYy/2025012212.jpg', onSale: true},
-{id: '2025012213', name: 'Lacquer Stamp Silver Lapis Lazuli', price: 65, previewImage: 'https://i.ibb.co/9w6WZmN/2025012213.jpg', onSale: true},
-{id: '202501270', name: 'Medal Silver', price: 15, previewImage: 'https://i.ibb.co/YWY5hZ0/202501270.jpg', onSale: true},
-{id: '202501271', name: 'Medal Silver', price: 15, previewImage: 'https://i.ibb.co/SwCw9Nf/202501271.jpg', onSale: true},
-{id: '202501272', name: 'Medal Silver', price: 10, previewImage: 'https://i.ibb.co/Cs2HnM1/202501272.jpg', onSale: true},
-{id: '202501273', name: 'Medal Silver', price: 10, previewImage: 'https://i.ibb.co/k8N4GTG/202501273.jpg', onSale: true},
-{id: '202501274', name: 'Astrid Lindgren Memorial Coin Emil I Lonneberga Silver', price: 60, previewImage: 'https://i.ibb.co/Bn4MGS0/202501274.jpg', onSale: true},
-{id: '202501275', name: 'Silver Necklace', price: 24, previewImage: 'https://i.ibb.co/ss6kx9X/202501275.jpg', onSale: true},
-{id: '202501276', name: 'Pair Of Silver Candles', price: 300, previewImage: 'https://i.ibb.co/g9WqgRg/202501276.jpg', onSale: true},
-{id: '202501277', name: 'Silver Watch', price: 200, previewImage: 'https://i.ibb.co/6FRX9pR/202501277.jpg', onSale: true},
-{id: '202501278', name: 'Silver Wrist Bracelet', price: 60, previewImage: 'https://i.ibb.co/PTmMZdQ/202501278.jpg', onSale: true},
-{id: '202501279', name: 'Silver Necklace Jewelry', price: 60, previewImage: 'https://i.ibb.co/Fm9CtSR/202501279.jpg', onSale: true},
-{id: '202501280', name: '6 Silver/Glass Coasters', price: 260, previewImage: 'https://i.ibb.co/Pcx5JmM/202501280.jpg', onSale: true},
-{id: '202501281', name: 'Silver Letter Holder', price: 348, previewImage: 'https://i.ibb.co/rfmMFVC/202501281.jpg', onSale: true},
-{id: '202501282', name: '6 Silver Tea Spoons', price: 164, previewImage: 'https://i.ibb.co/vL38kcG/202501282.jpg', onSale: true},
-{id: '202501283', name: '6 Silver Coffee Spoons', price: 94, previewImage: 'https://i.ibb.co/KqQ6RGJ/202501283.jpg', onSale: true},
-{id: '202501284', name: 'Silver Sugar Bowl', price: 80, previewImage: 'https://i.ibb.co/j8xX8z1/202501284.jpg', onSale: true},
-{id: '202501285', name: 'Silver Spoon', price: 200, previewImage: 'https://i.ibb.co/VMmSp65/202501285.jpg', onSale: true},
-{id: '202501286', name: 'Silver Sugar Tong', price: 78, previewImage: 'https://i.ibb.co/4KytpGb/202501286.jpg', onSale: true},
-{id: '202501287', name: 'Silver Cake Server', price: 76, previewImage: 'https://i.ibb.co/KKNbCbN/202501287.jpg', onSale: true},
-{id: '202501288', name: 'Silver Tea Strainer', price: 90, previewImage: 'https://i.ibb.co/CJMxrgL/202501288.jpg', onSale: true},
-{id: '202501289', name: 'Pair Of Silver Candles', price: 184, previewImage: 'https://i.ibb.co/RvntN1k/202501289.jpg', onSale: true},
-{id: '202501291', name: 'Silver Italy 1863 20 Centesimi', price: 25, previewImage: 'https://i.ibb.co/GGMw03J/202501291.jpg', onSale: true},
-{id: '202501292', name: 'Silver Newfoundland 5 Cents 1917', price: 20, previewImage: 'https://i.ibb.co/Q3QTMBDg/202501292.jpg', onSale: true},
-{id: '202501293', name: 'Silver Sweden 1950 10 Ore', price: 10, previewImage: 'https://i.ibb.co/3mQdspZc/202501293.jpg', onSale: true},
-{id: '202501295', name: 'Silver Sweden kr 1954 ', price: 14, previewImage: 'https://i.ibb.co/9mpkBj2z/202501295.jpg', onSale: true},
-{id: '202501297', name: 'Silver Medal 1973 Arboga Skyttegille', price: 18, previewImage: 'https://i.ibb.co/hvBwSzv/202501297.jpg', onSale: true},
-{id: '202501298', name: 'Silver Germany 2002 10 Euro', price: 36, previewImage: 'https://i.ibb.co/VppBzspN/202501298.jpg', onSale: true},
-{id: '202501299', name: 'Silver Swedish Army Handheld Weapon medal', price: 36, previewImage: 'https://i.ibb.co/MyYkp7Cv/202501299.jpg', onSale: true},
-{id: '2025012910', name: 'Silver 50 ore Sweden 1899', price: 10, previewImage: 'https://i.ibb.co/zhRvddht/2025012910.jpg', onSale: true},
-{id: '2025012911', name: 'Silver Quarter Dollar US 1954', price: 12, previewImage: 'https://i.ibb.co/gFyzSv4M/2025012911.jpg', onSale: true},
-{id: '202501300', name: '10 Silver Coffee Spoons', price: 656, previewImage: 'https://i.ibb.co/YFV4k1PV/202501300.jpg', onSale: true},
-{id: '202501301', name: 'Silver Cross', price: 35, previewImage: 'https://i.ibb.co/TMbBt080/202501301.jpg', onSale: true},
-{id: '202501302', name: 'Silver Cross', price: 15, previewImage: 'https://i.ibb.co/SwBgt6LB/202501302.jpg', onSale: true},
-{id: '202501303', name: 'Silver Ring', price: 15, previewImage: 'https://i.ibb.co/MxswKS69/202501303.jpg', onSale: true},
-{id: '202501304', name: 'Silver Ring', price: 8, previewImage: 'https://i.ibb.co/mghmC1H/202501304.jpg', onSale: true},
-{id: '202501305', name: 'Silver Ring', price: 15, previewImage: 'https://i.ibb.co/0yGkvKY2/202501305.jpg', onSale: true},
-{id: '202501306', name: 'Silver Ring', price: 25, previewImage: 'https://i.ibb.co/rfTQq40L/202501306.jpg', onSale: true},
-{id: '202501307', name: 'Silver Ring', price: 20, previewImage: 'https://i.ibb.co/dJgVbCPc/202501307.jpg', onSale: true},
-{id: '202501308', name: 'Silver Ring', price: 30, previewImage: 'https://i.ibb.co/9mBjTLcP/202501308.jpg', onSale: true},
-{id: '202501309', name: 'A Pair Of Silver Cufflinks', price: 18, previewImage: 'https://i.ibb.co/YBT3wDvm/202501309.jpg', onSale: true},
-{id: '2025013010', name: 'A Pair Of Silver Cufflinks', price: 18, previewImage: 'https://i.ibb.co/ZRhHwjry/2025013010.jpg', onSale: true},
-{id: '2025013011', name: 'A Pair Of Silver Cufflinks', price: 26, previewImage: 'https://i.ibb.co/VW8XNjRz/2025013011.jpg', onSale: true},
-{id: '2025013012', name: 'A Pair Of Silver Cufflinks', price: 20, previewImage: 'https://i.ibb.co/xKtpNM7r/2025013012.jpg', onSale: true},
-{id: '2025013013', name: 'A Pair Of Silver Cufflinks', price: 20, previewImage: 'https://i.ibb.co/35G8HJKB/2025013013.jpg', onSale: true},
-{id: '2025013014', name: 'A Pair Of Silver Cufflinks', price: 18, previewImage: 'https://i.ibb.co/DHMTr5q2/2025013014.jpg', onSale: true},
-{id: '202502010', name: 'DELIZIE DEL CRISTIANO Leather Binding With Silver Plate Printed 1903', price: 120, previewImage: 'https://i.ibb.co/ym96kLvj/202502010.jpg', onSale: true},
-{id: '202502011', name: 'Silver Medal Swimming', price: 10, previewImage: 'https://i.ibb.co/pvhRGFwQ/202502011.jpg', onSale: true},
-{id: '202502012', name: 'Silver Medal Skiing', price: 10, previewImage: 'https://i.ibb.co/5WcksgVH/202502012.jpg', onSale: true},
-{id: '202502013', name: 'Silver Pin FÖr Sverige', price: 15, previewImage: 'https://i.ibb.co/15p1Ksf/202502013.jpg', onSale: true},
-{id: '202502014', name: 'Silver Pin', price: 15, previewImage: 'https://i.ibb.co/C5LmZbxk/202502014.jpg', onSale: true},
-{id: '202502015', name: 'Silver Pin', price: 10, previewImage: 'https://i.ibb.co/XrJ24ZCz/202502015.jpg', onSale: true},
-{id: '202502016', name: 'Silver Pin', price: 10, previewImage: 'https://i.ibb.co/LdqgHTsM/202502016.jpg', onSale: true},
-{id: '202502017', name: 'Silver Pin', price: 10, previewImage: 'https://i.ibb.co/vC8cwR3G/202502017.jpg', onSale: true},
-{id: '202502018', name: 'Silver Pin', price: 10, previewImage: 'https://i.ibb.co/ZRMKbBDx/202502018.jpg', onSale: true},
-{id: '202502019', name: 'Silver Pin Student Cap', price: 10, previewImage: 'https://i.ibb.co/xtTGWfMk/202502019.jpg', onSale: true},
-{id: '202502020', name: 'Silver Brooch', price: 25, previewImage: 'https://i.ibb.co/B2WD743J/202502020.jpg', onSale: true},
-{id: '202502021', name: 'Silver Brooch', price: 25, previewImage: 'https://i.ibb.co/gZX7hsvR/202502021.jpg', onSale: true},
-{id: '202502022', name: 'Silver Price Badge', price: 20, previewImage: 'https://i.ibb.co/Qvt8bQRm/202502022.jpg', onSale: true},
-{id: '202502023', name: 'Silver Price', price: 15, previewImage: 'https://i.ibb.co/CsWH8FYW/202502023.jpg', onSale: true},
-{id: '202502024', name: 'Silver Par Bricole', price: 50, previewImage: 'https://i.ibb.co/F4FYQprT/202502024.jpg', onSale: true},
-{id: '202502025', name: 'Silver Coin Sweden', price: 10, previewImage: 'https://i.ibb.co/27dBj3qZ/202502025.jpg', onSale: true},
-{id: '202502026', name: 'Silver Price', price: 20, previewImage: 'https://i.ibb.co/ZR9n0FLB/202502026.jpg', onSale: true},
-{id: '202502027', name: 'Silver Price', price: 20, previewImage: 'https://i.ibb.co/yBVM8W6Q/202502027.jpg', onSale: true},
-{id: '202502028', name: 'Silver Copper Price', price: 15, previewImage: 'https://i.ibb.co/FbSVXJvQ/202502028.jpg', onSale: true},
-{id: '202502029', name: 'Silver Price', price: 15, previewImage: 'https://i.ibb.co/5g6Z1KHT/202502029.jpg', onSale: true},
-{id: '2025020210', name: 'Silver Price', price: 15, previewImage: 'https://i.ibb.co/zWHpLf8k/2025020210.jpg', onSale: true},
-{id: '2025020211', name: 'Silver Price', price: 20, previewImage: 'https://i.ibb.co/G4hGVdq6/2025020211.jpg', onSale: true},
-{id: '2025020212', name: 'Silver Price', price: 15, previewImage: 'https://i.ibb.co/93n6mbnK/2025020212.jpg', onSale: true},
-{id: '2025020213', name: 'Silver Medal', price: 40, previewImage: 'https://i.ibb.co/ccJ0Vx4T/2025020213.jpg', onSale: true},
-{id: '2025020214', name: 'Silver Medal', price: 20, previewImage: 'https://i.ibb.co/dwvgwJ9M/2025020214.jpg', onSale: true},
-{id: '2025020215', name: 'Silver Medal', price: 10, previewImage: 'https://i.ibb.co/KpSsGvWw/2025020215.jpg', onSale: true},
-{id: '2025020216', name: 'Silver Medal', price: 10, previewImage: 'https://i.ibb.co/YgGt3kS/2025020216.jpg', onSale: true},
-{id: '2025020217', name: 'Silver Medal', price: 20, previewImage: 'https://i.ibb.co/B55dcVpH/2025020217.jpg', onSale: true},
-{id: '2025020218', name: 'Silver Pin', price: 10, previewImage: 'https://i.ibb.co/Ldwj9txn/2025020218.jpg', onSale: true},
-{id: '2025020219', name: 'Silver Medal', price: 10, previewImage: 'https://i.ibb.co/5WBMYxD1/2025020219.jpg', onSale: true},
-{id: '2025020220', name: 'Silver Medal', price: 25, previewImage: 'https://i.ibb.co/233VTVSt/2025020220.jpg', onSale: true},
-{id: '2025020221', name: 'Silver Medal', price: 20, previewImage: 'https://i.ibb.co/bgJ4Nnv4/2025020221.jpg', onSale: true},
-{id: '2025020222', name: 'Silver Brooch', price: 45, previewImage: 'https://i.ibb.co/JwnF8yf1/2025020222.jpg', onSale: true},
-{id: '202502190', name: 'Brush Silver', price: 120, previewImage: 'https://i.ibb.co/5gzF9YHs/202502190.jpg', onSale: true},
-{id: '202502191', name: 'Brush Silver', price: 40, previewImage: 'https://i.ibb.co/tpPRmkXK/202502191.jpg', onSale: true},
-{id: '202502192', name: 'Silver Bell', price: 86, previewImage: 'https://i.ibb.co/hRkt3wxs/202502192.jpg', onSale: true},
-{id: '202502193', name: 'Silver Candles', price: 156, previewImage: 'https://i.ibb.co/N2CtS2Dq/202502193.jpg', onSale: true},
-{id: '202502194', name: 'Silver Candles', price: 160, previewImage: 'https://i.ibb.co/Y49hJmP5/202502194.jpg', onSale: true},
-{id: '202502195', name: 'Silver Candles', price: 160, previewImage: 'https://i.ibb.co/LDwsCHDr/202502195.jpg', onSale: true},
-{id: '202502196', name: 'Silver Candles', price: 188, previewImage: 'https://i.ibb.co/C3RRmrbY/202502196.jpg', onSale: true},
-{id: '202502197', name: 'Silver Candles', price: 116, previewImage: 'https://i.ibb.co/mFRPVFhB/202502197.jpg', onSale: true},
-{id: '202502198', name: 'Silver Candles', price: 160, previewImage: 'https://i.ibb.co/pvKXfrfw/202502198.jpg', onSale: true},
-{id: '202502199', name: 'Ice Bucket Silver', price: 5800, previewImage: 'https://i.ibb.co/nMQ5d9kJ/202502199.jpg', onSale: true},
-{id: '202502200', name: 'Silver Bowl', price: 880, previewImage: 'https://i.ibb.co/HLKfNJ0s/202502200.jpg', onSale: true},
-{id: '202502201', name: 'Silver Bowl', price: 920, previewImage: 'https://i.ibb.co/cc02Vk7y/202502201.jpg', onSale: true},
-{id: '202502202', name: 'Silver Plate', price: 960, previewImage: 'https://i.ibb.co/8gBXztg2/202502202.jpg', onSale: true},
-{id: '202502203', name: 'Silver Bowl', price: 280, previewImage: 'https://i.ibb.co/LDHHx9jJ/202502203.jpg', onSale: true},
-{id: '202502204', name: 'Silver Sugar Tong Georg Jensen Denmark', price: 300, previewImage: 'https://i.ibb.co/hRjKYNbk/202502204.jpg', onSale: true},
-{id: '202502205', name: 'Silver Sugar Spoon', price: 36, previewImage: 'https://i.ibb.co/zhcnKhwW/202502205.jpg', onSale: true},
-{id: '202502206', name: 'Silver Sugar Tong', price: 36, previewImage: 'https://i.ibb.co/NnkXPqLr/202502206.jpg', onSale: true},
-{id: '202502207', name: 'Silver Sugar Tong', price: 40, previewImage: 'https://i.ibb.co/ZR3MptF2/202502207.jpg', onSale: true},
-{id: '202502208', name: 'Silver Salt Dips', price: 80, previewImage: 'https://i.ibb.co/tTKQ9XkH/202502208.jpg', onSale: true},
-{id: '202502209', name: 'Silver Salt Dip Soviet 1954', price: 35, previewImage: 'https://i.ibb.co/R4sPKBct/202502209.jpg', onSale: true},
-{id: '202502210', name: 'Silver Candles', price: 194, previewImage: 'https://i.ibb.co/ZRkn1KNZ/202502210.jpg', onSale: true},
-{id: '202502211', name: 'Silver Candles', price: 184, previewImage: 'https://i.ibb.co/jPQsbDpt/202502211.jpg', onSale: true},
-{id: '202502212', name: 'Cream And Sugar Set Silver', price: 392, previewImage: 'https://i.ibb.co/FbXtfyx4/202502212.jpg', onSale: true},
-{id: '202502213', name: 'Silver Tray', price: 582, previewImage: 'https://i.ibb.co/GQcyWMMc/202502213.jpg', onSale: true},
-{id: '202502214', name: 'Silver napkin holder', price: 30, previewImage: 'https://i.ibb.co/k26MQ8L3/202502214.jpg', onSale: true},
-{id: '202502215', name: 'Silver napkin holder', price: 42, previewImage: 'https://i.ibb.co/LdSX9wNS/202502215.jpg', onSale: true},
-{id: '202502216', name: 'Silver napkin holder', price: 18, previewImage: 'https://i.ibb.co/pBDq7gLq/202502216.jpg', onSale: true},
-{id: '202502217', name: 'Silver Tray', price: 104, previewImage: 'https://i.ibb.co/206Yh6rR/202502217.jpg', onSale: true},
-{id: '202502218', name: 'Silver Bakelite Glass Coaster', price: 16, previewImage: 'https://i.ibb.co/sp9X4Yd6/202502218.jpg', onSale: true},
-{id: '202502219', name: 'Silver Tray', price: 276, previewImage: 'https://i.ibb.co/5XgrJHbj/202502219.jpg', onSale: true},
-{id: '2025022110', name: 'Spokane Falls Washington Silver Spoon', price: 40, previewImage: 'https://i.ibb.co/mCtTJK4G/2025022110.jpg', onSale: true},
-{id: '2025022111', name: '4 Silver Liqueur Glass Holders', price: 80, previewImage: 'https://i.ibb.co/9kFZP930/2025022111.jpg', onSale: true},
-{id: '2025022112', name: '4 Silver Liqueur Glass Holders', price: 150, previewImage: 'https://i.ibb.co/gLwkGhfj/2025022112.jpg', onSale: true},
-{id: '2025022113', name: 'Silver tumbler', price: 24, previewImage: 'https://i.ibb.co/hx1F7YnP/2025022113.jpg', onSale: true},
-{id: '2025022114', name: 'Stainless Steel Silver Cake Server', price: 56, previewImage: 'https://i.ibb.co/ks5y3g6n/2025022114.jpg', onSale: true},
-{id: '202503030', name: 'Silver Plaket Jesus', price: 50, previewImage: 'https://i.ibb.co/6JtRXsDr/202503030.jpg', onSale: true},
-{id: '202503031', name: 'Silver Jewelry Box', price: 75, previewImage: 'https://i.ibb.co/hxNDdSQR/202503031.jpg', onSale: true},
-{id: '202503032', name: 'Silver Padre Pio Prega Per No', price: 10, previewImage: 'https://i.ibb.co/hxF5M549/202503032.jpg', onSale: true},
-{id: '202503033', name: 'Silver Box', price: 12, previewImage: 'https://i.ibb.co/jPRMJ74G/202503033.jpg', onSale: true},
-{id: '202503034', name: 'Silver Stone Necklace', price: 25, previewImage: 'https://i.ibb.co/3Jrxjgk/202503034.jpg', onSale: true},
-{id: '202503035', name: 'Silver Della Fortuna', price: 48, previewImage: 'https://i.ibb.co/tMnJVhbQ/202503035.jpg', onSale: true},
-{id: '202503036', name: 'Silver Wall Decoretion', price: 14, previewImage: 'https://i.ibb.co/230c46xs/202503036.jpg', onSale: true},
-{id: '202503037', name: 'Silver Salt Spoon', price: 5, previewImage: 'https://i.ibb.co/4gfFcW7h/202503037.jpg', onSale: true},
-{id: '202503038', name: 'Silver Lenght', price: 2, previewImage: 'https://i.ibb.co/p66xQSHR/202503038.jpg', onSale: true},
-{id: '202503039', name: 'Silver Necklace', price: 16, previewImage: 'https://i.ibb.co/RkGhFX8w/202503039.jpg', onSale: true},
-{id: '2025030310', name: 'Silver Heart Necklace', price: 10, previewImage: 'https://i.ibb.co/bxDbGYz/2025030310.jpg', onSale: true},
-{id: '2025030311', name: 'Silver Stone Necklace', price: 25, previewImage: 'https://i.ibb.co/20z4TNG0/2025030311.jpg', onSale: true},
-{id: '2025030312', name: 'Silver And Stone Necklace', price: 10, previewImage: 'https://i.ibb.co/qLpDPSSb/2025030312.jpg', onSale: true},
-{id: '2025030313', name: 'Silver And Glass Necklace', price: 10, previewImage: 'https://i.ibb.co/twxMSpjG/2025030313.jpg', onSale: true},
-{id: '2025030314', name: 'Silver Coral Necklace', price: 25, previewImage: 'https://i.ibb.co/fYZn90rL/2025030314.jpg', onSale: true},
-{id: '2025030315', name: 'Silver Box', price: 25, previewImage: 'https://i.ibb.co/zHmWP7F7/2025030315.jpg', onSale: true},
-{id: '2025030316', name: 'Silver Mirror', price: 20, previewImage: 'https://i.ibb.co/ZpMn9wDm/2025030316.jpg', onSale: true},
-{id: '2025030317', name: 'Silver Frame', price: 15, previewImage: 'https://i.ibb.co/tP4ZVXcs/2025030317.jpg', onSale: true},
-{id: '2025030318', name: 'Silver Frame', price: 15, previewImage: 'https://i.ibb.co/jk10hFxg/2025030318.jpg', onSale: true},
-{id: '2025030319', name: 'Silver Maria', price: 8, previewImage: 'https://i.ibb.co/VcFWXrn8/2025030319.jpg', onSale: true},
-{id: '2025030320', name: 'Silver Necklace Latter L', price: 3, previewImage: 'https://i.ibb.co/zVRDFHc0/2025030320.jpg', onSale: true},
-{id: '2025030321', name: '2 Silver Ear Rings', price: 12, previewImage: 'https://i.ibb.co/G32d4xV0/2025030321.jpg', onSale: true},
-{id: '2025030322', name: 'Silver Necklace Star', price: 2, previewImage: 'https://i.ibb.co/wFF9BfYH/2025030322.jpg', onSale: true},
-{id: '2025030323', name: 'SiLVER Necklace', price: 2, previewImage: 'https://i.ibb.co/0yxbtZDN/2025030323.jpg', onSale: true},
-{id: '2025030324', name: '1 Silver Ear Ring', price: 6, previewImage: 'https://i.ibb.co/Pvf5FVX6/2025030324.jpg', onSale: true},
-{id: '2025030325', name: 'Silver Ladys Bag Holder', price: 5, previewImage: 'https://i.ibb.co/HfJNh2GS/2025030325.jpg', onSale: true},
-{id: '2025030326', name: 'Silver Frame', price: 38, previewImage: 'https://i.ibb.co/bjMxrwdN/2025030326.jpg', onSale: true},
-{id: '2025030327', name: '8 Silver Spoons', price: 134, previewImage: 'https://i.ibb.co/QjHFHFW9/2025030327.jpg', onSale: true}
-];
-    function renderProducts() {
-      const productList = document.querySelector('.product-list');
-      productList.innerHTML = '';
-      products.forEach(product => {
-        if (product.onSale) {
-          const productCard = document.createElement('div');
-          productCard.classList.add('product-card');
-          productCard.innerHTML = `
-            <img src="${product.previewImage}" alt="${product.name}">
-            <h2>${product.name}</h2>
-            <p>Price: €${product.price}</p>
-            <p>ID: ${product.id}</p>
-          `;
-          productList.appendChild(productCard);
-        }
-      });
-    }
+  <div id="imageModal" class="modal-overlay">
+    <span class="modal-close">×</span>
+    <img class="modal-content" id="modalImage" alt="Large product preview">
+  </div>
 
-    renderProducts();
-  </script>
+  <script src="products.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
